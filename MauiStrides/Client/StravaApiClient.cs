@@ -16,6 +16,16 @@ namespace MauiStrides.Client
             _httpClient = httpClient;
         }
 
+        public void StoreToken()
+        {
+        
+        }
+        public void SetAccessToken(string accessToken)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = 
+                new AuthenticationHeaderValue("Bearer", accessToken);
+        }
+
         public async Task<List<Activity>> GetActivitiesAsync(string accessToken, string? type = null)
         {
             // Implement the logic to call Strava API and fetch activities of the specified type

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MauiStrides.ViewModels"
+             xmlns:models="clr-namespace:MauiStrides.Models"
+             x:Class="MauiStrides.ActivitiesPage"
+             Title="My Feed">
+
+    <Grid RowDefinitions="auto, *">
+        <Grid Grid.Row="0" Padding="10" BackgroundColor="AntiqueWhite">
+            <Border StrokeShape="RoundRectangle 25"
+                    HeightRequest="50" WidthRequest="50"
+                    HorizontalOptions="End">
+
+                <Image Source="{Binding CurrentAthleteProfile.ProfileMedium}"
+                       Aspect="AspectFill">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Path=GoToProfileCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Border>
+        </Grid>
+
+        <CollectionView Grid.Row="1"
+                    ItemsSource="{Binding Activities}"
+                    SelectionMode="Single"
+                    SelectionChangedCommand="{Binding GoToDetailsCommand}"
+                    SelectionChangedCommandParameter="{Binding .}">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:AthleteProfile">
+                    <StackLayout Padding="10">
+                        <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold"/>
+                        <Label Text="{Binding Type}" TextColor="Gray"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>
