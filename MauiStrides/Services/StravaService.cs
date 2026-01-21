@@ -1,36 +1,38 @@
 ﻿using MauiStrides.Client;
 using MauiStrides.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MauiStrides.Services
 {
     public class StravaService : IStravaService
     {
         private readonly StravaApiClient _apiClient;
+        
         public StravaService(StravaApiClient apiClient) => _apiClient = apiClient;
         
-        public async Task<Activity> GetActivityDetailsAsync(string accessToken, long activityId)
+        // ✅ No more accessToken parameters - handled automatically!
+        
+        public async Task<List<Activity>> GetAllActivitiesAsync(string? type = null)
         {
-            var selectedActivity = await _apiClient.GetActivityDetailsAsync(accessToken, activityId);
-            return selectedActivity;
-        }
-
-        public async Task<List<Activity>> GetAllActivitiesAsync(string accessToken, string? type = null)
-        {
+            var allActivities = await _apiClient.GetActivitiesAsync();
             
-            var allActivities = await _apiClient.GetActivitiesAsync(accessToken);
-            var filterActivity = allActivities
-                .Where(a => a.Type.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
-                
-            return filterActivity;
+            if (!string.IsNullOrWhiteSpace(type))
+            {
+                return allActivities
+                    .Where(a => a.Type.Equals(type, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+            
+            return allActivities;
         }
 
-        public async Task<AthleteProfile> GetAthleteProfileAsync(string accessToken)
+        public async Task<AthleteProfile> GetAthleteProfileAsync()
         {
-            var profile = await _apiClient.GetAthleteProfileAsync(accessToken);
-            return profile;
+            return await _apiClient.GetAthleteProfileAsync();
+        }
+        
+        public async Task<Activity> GetActivityDetailsAsync(long activityId)
+        {
+            return await _apiClient.GetActivityDetailsAsync(activityId);
         }
     }
 }

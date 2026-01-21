@@ -1,104 +1,83 @@
-﻿
-using MauiStrides.Models;
-
-using System;
-using System.Collections.Generic;
+﻿using MauiStrides.Models;
+using MauiStrides.Services;
 using System.Net.Http.Headers;
-using System.Text;
+using System.Net.Http.Json;
 
 namespace MauiStrides.Client
 {
     public class StravaApiClient
     {
         private readonly HttpClient _httpClient;
-        public StravaApiClient(HttpClient httpClient)
+        private readonly ITokenService _tokenService;
+        private const string BaseUrl = "https://www.strava.com/api/v3";
+
+        public StravaApiClient(HttpClient httpClient, ITokenService tokenService)
         {
             _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri(BaseUrl);
+            _tokenService = tokenService;
         }
 
-        public void StoreToken()
+        /// <summary>
+        /// Gets all activities for the authenticated athlete (token handled automatically)
+        /// </summary>
+        public async Task<List<Activity>> GetActivitiesAsync()
         {
-        
+            await SetAuthorizationHeaderAsync();
+            return await GetAsync<List<Activity>>("/athlete/activities");
         }
-        public void SetAccessToken(string accessToken)
+
+        /// <summary>
+        /// Gets the authenticated athlete's profile (token handled automatically)
+        /// </summary>
+        public async Task<AthleteProfile> GetAthleteProfileAsync()
         {
+            await SetAuthorizationHeaderAsync();
+            return await GetAsync<AthleteProfile>("/athlete");
+        }
+
+        /// <summary>
+        /// Gets detailed information about a specific activity (token handled automatically)
+        /// </summary>
+        public async Task<Activity> GetActivityDetailsAsync(long activityId)
+        {
+            await SetAuthorizationHeaderAsync();
+            return await GetAsync<Activity>($"/activities/{activityId}");
+        }
+
+        // ============================================
+        // PRIVATE HELPER METHODS
+        // ============================================
+
+        /// <summary>
+        /// Automatically gets valid token and sets Authorization header
+        /// Handles token refresh transparently
+        /// </summary>
+        private async Task SetAuthorizationHeaderAsync()
+        {
+            var accessToken = await _tokenService.GetValidAccessTokenAsync();
             _httpClient.DefaultRequestHeaders.Authorization = 
                 new AuthenticationHeaderValue("Bearer", accessToken);
         }
 
-        public async Task<List<Activity>> GetActivitiesAsync(string accessToken, string? type = null)
+        /// <summary>
+        /// Generic GET request helper (DRY principle)
+        /// </summary>
+        private async Task<T> GetAsync<T>(string endpoint)
         {
-            // Implement the logic to call Strava API and fetch activities of the specified type
-            HttpResponseMessage response = await SendGetRequestAsync("https://www.strava.com/api/v3/athlete/activities", accessToken);
-          
-            if (response.IsSuccessStatusCode)
-            {
-                string json = await response.Content.ReadAsStringAsync();
+            var response = await _httpClient.GetAsync(endpoint);
 
-                var allActivities = System.Text.Json.JsonSerializer.Deserialize<List<Activity>>(json);
-                return allActivities;
-            }
-            else 
+            if (!response.IsSuccessStatusCode)
             {
                 var errorDetails = await response.Content.ReadAsStringAsync();
-
-                throw new HttpRequestException($"Fel statuskod: {response.StatusCode} info: {errorDetails}");
-            }
-        }
-
-        public async Task<AthleteProfile> GetAthleteProfileAsync(string accessToken)
-        {
-            // Implement the logic to call Strava API and fetch athlete profile
-            HttpResponseMessage response = await SendGetRequestAsync("https://www.strava.com/api/v3/athlete", accessToken);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string json = await response.Content.ReadAsStringAsync();
-
-                var athleteProfile = System.Text.Json.JsonSerializer.Deserialize<AthleteProfile>(json);
-                return athleteProfile;
-            }
-            else
-            {
-                var errorDetails = await response.Content.ReadAsStringAsync();
-
-                throw new HttpRequestException($"Fel statuskod: {response.StatusCode} info: {errorDetails}");
+                throw new HttpRequestException(
+                    $"Strava API error: {response.StatusCode}. Details: {errorDetails}");
             }
 
-        }
-
-       
-
-        public async Task<Activity> GetActivityDetailsAsync(string accessToken, long activityId)
-        {
+            var result = await response.Content.ReadFromJsonAsync<T>();
             
-            HttpResponseMessage response = await SendGetRequestAsync($"https://www.strava.com/api/v3/activities/{activityId}", accessToken);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string json = await response.Content.ReadAsStringAsync();
-
-                var selectActivity = System.Text.Json.JsonSerializer.Deserialize<Activity>(json);
-                return selectActivity;
-            }
-            else
-            {
-                var errorDetails = await response.Content.ReadAsStringAsync();
-
-                throw new HttpRequestException($"Fel statuskod: {response.StatusCode} info: {errorDetails}");
-            }
-
+            return result ?? throw new InvalidOperationException(
+                $"Failed to deserialize response from {endpoint}");
         }
-
-        //Hjälpmetod for GET requests (DRY)
-        private async Task<HttpResponseMessage> SendGetRequestAsync(string url, string accessToken)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-            var response = await _httpClient.SendAsync(request);
-            return response;
-        }
-
     }
 }

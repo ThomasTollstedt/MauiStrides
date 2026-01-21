@@ -11,14 +11,12 @@ public partial class ActivitiesPage : ContentPage
         _viewModel = viewModel;
         InitializeComponent();
         BindingContext = viewModel;
-
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        string token = ;
-        await _viewModel.LoadActivitiesAsync(token);
+        // ? No token needed - TokenService handles it automatically
+        await _viewModel.LoadActivitiesAsync();
     }
-
 }

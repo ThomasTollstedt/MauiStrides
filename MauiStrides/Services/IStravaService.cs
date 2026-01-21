@@ -7,14 +7,8 @@ namespace MauiStrides.Services
 {
     public interface IStravaService
     {
-        Task<Activity> GetActivityDetailsAsync(string accessToken, long activityId);
-
-
-        Task<List<Activity>> GetAllActivitiesAsync(string accessToken, string? type = null);
-
-
-        Task<AthleteProfile> GetAthleteProfileAsync(string accessToken);
-       
-
+        Task<List<Activity>> GetAllActivitiesAsync(string? type = null);
+        Task<AthleteProfile> GetAthleteProfileAsync();
+        Task<Activity> GetActivityDetailsAsync(long activityId);
     }
 }

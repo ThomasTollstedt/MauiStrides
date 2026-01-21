@@ -1,0 +1,8 @@
+# Strava Secrets - DO NOT COMMIT
+appsettings.json
+appsettings.*.json
+
+# Other common .NET ignores
+bin/
+obj/
+.vs/
