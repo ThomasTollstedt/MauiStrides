@@ -1,10 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MauiStrides.Models;
 using MauiStrides.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace MauiStrides.ViewModels
 {
@@ -22,24 +19,21 @@ namespace MauiStrides.ViewModels
         [ObservableProperty]
         private AthleteProfile? currentAthleteProfile;
 
-
-
-        public async Task LoadActivitiesAsync(string accessToken, string? type = null)
+        // ✅ No more accessToken parameters!
+        public async Task LoadActivitiesAsync(string? type = null)
         {
-            Activities.Clear(); //Rensar listan innan ny data laddas in
-            var allActivities = await _stravaService.GetAllActivitiesAsync(accessToken, type);
+            Activities.Clear();
+            var allActivities = await _stravaService.GetAllActivitiesAsync(type);
             foreach (var item in allActivities)
             {
                 Activities.Add(item);
             }
-
         }
 
-        public async Task LoadAthleteProfile(string accessToken)
+        public async Task LoadAthleteProfile()
         {
-            var profile = await _stravaService.GetAthleteProfileAsync(accessToken);
+            var profile = await _stravaService.GetAthleteProfileAsync();
             CurrentAthleteProfile = profile;
-
         }
     }
 }
