@@ -9,7 +9,7 @@ namespace MauiStrides.Client
     {
         private readonly HttpClient _httpClient;
         private readonly ITokenService _tokenService;
-        private const string BaseUrl = "https://www.strava.com/api/v3";
+        private const string BaseUrl = "https://www.strava.com/api/v3/";
 
         public StravaApiClient(HttpClient httpClient, ITokenService tokenService)
         {
@@ -24,7 +24,7 @@ namespace MauiStrides.Client
         public async Task<List<Activity>> GetActivitiesAsync()
         {
             await SetAuthorizationHeaderAsync();
-            return await GetAsync<List<Activity>>("/athlete/activities");
+            return await GetAsync<List<Activity>>("athlete/activities");
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace MauiStrides.Client
         public async Task<AthleteProfile> GetAthleteProfileAsync()
         {
             await SetAuthorizationHeaderAsync();
-            return await GetAsync<AthleteProfile>("/athlete");
+            return await GetAsync<AthleteProfile>("athlete");
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace MauiStrides.Client
         public async Task<Activity> GetActivityDetailsAsync(long activityId)
         {
             await SetAuthorizationHeaderAsync();
-            return await GetAsync<Activity>($"/activities/{activityId}");
+            return await GetAsync<Activity>($"activities/{activityId}");
         }
 
         // ============================================
