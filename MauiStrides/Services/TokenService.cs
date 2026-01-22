@@ -1,4 +1,4 @@
-using MauiStrides.Models;
+﻿using MauiStrides.Models;
 using System.Net.Http.Json;
 
 namespace MauiStrides.Services
@@ -13,7 +13,7 @@ namespace MauiStrides.Services
         private readonly string _clientId;
         private readonly string _clientSecret;
 
-        // ? UPDATED CONSTRUCTOR - uses StravaConfiguration
+        // ✅ UPDATED CONSTRUCTOR - uses StravaConfiguration
         public TokenService(HttpClient httpClient, StravaConfiguration configuration)
         {
             _httpClient = httpClient;
@@ -79,6 +79,33 @@ namespace MauiStrides.Services
             SecureStorage.Remove(RefreshTokenKey);
             SecureStorage.Remove(ExpiresAtKey);
             await Task.CompletedTask;
+        }
+
+
+        // LoginAsync
+        public async Task<string> LoginAsync(string authorizationCode)
+        {
+            // Prepare the token request
+            var requestContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("client_id", _clientId),
+                new KeyValuePair<string, string>("client_secret", _clientSecret),
+                new KeyValuePair<string, string>("code", authorizationCode),
+                new KeyValuePair<string, string>("grant_type", "authorization_code")
+            });
+            var response = await _httpClient.PostAsync("https://www.strava.com/oauth/token", requestContent);
+            response.EnsureSuccessStatusCode();
+            var tokenResponse = await response.Content.ReadFromJsonAsync<StravaTokenResponse>();
+            if (tokenResponse == null)
+            {
+                throw new InvalidOperationException("Failed to deserialize token response");
+            }
+            // Store the tokens
+            await StoreTokensAsync(
+                tokenResponse.AccessToken, 
+                tokenResponse.RefreshToken, 
+                tokenResponse.ExpiresAt);
+            return tokenResponse.AccessToken;
         }
 
         /// <summary>

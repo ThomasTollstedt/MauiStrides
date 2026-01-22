@@ -3,36 +3,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:MauiStrides.ViewModels"
              xmlns:models="clr-namespace:MauiStrides.Models"
-             x:Class="MauiStrides.ActivitiesPage"
-             Title="My Feed">
+             x:Class="MauiStrides.Views.ActivitiesPage"
+             Title="Activities">
 
     <Grid RowDefinitions="auto, *">
-        <Grid Grid.Row="0" Padding="10" BackgroundColor="AntiqueWhite">
+        <Grid Grid.Row="0" Padding="10" BackgroundColor="#FC5200">
+            <Label Text="Mina Aktiviteter" 
+                   VerticalOptions="Center" 
+                   TextColor="White" 
+                   FontAttributes="Bold"/>
+
             <Border StrokeShape="RoundRectangle 25"
                     HeightRequest="50" WidthRequest="50"
-                    HorizontalOptions="End">
+                    HorizontalOptions="End"
+                    Stroke="White"
+                    StrokeThickness="2">
 
                 <Image Source="{Binding CurrentAthleteProfile.ProfileMedium}"
                        Aspect="AspectFill">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Path=GoToProfileCommand}" />
+                        <TapGestureRecognizer Command="{Binding GoToProfileCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
             </Border>
         </Grid>
 
         <CollectionView Grid.Row="1"
-                    ItemsSource="{Binding Activities}"
-                    SelectionMode="Single"
-                    SelectionChangedCommand="{Binding GoToDetailsCommand}"
-                    SelectionChangedCommandParameter="{Binding .}">
+                        ItemsSource="{Binding Activities}"
+                        SelectionMode="Single"
+                        SelectionChangedCommand="{Binding GoToDetailsCommand}"
+                        SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}">
 
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:AthleteProfile">
-                    <StackLayout Padding="10">
-                        <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold"/>
-                        <Label Text="{Binding Type}" TextColor="Gray"/>
-                    </StackLayout>
+                <DataTemplate x:DataType="models:Activity">
+                    <Border Padding="10" Margin="5" StrokeShape="RoundRectangle 10">
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+
+                            <Label Grid.Row="0" Grid.Column="0" 
+                                   Text="{Binding Name}" 
+                                   FontSize="16" 
+                                   FontAttributes="Bold"/>
+
+                            <Label Grid.Row="0" Grid.Column="1" 
+                                   Text="{Binding StartDate, StringFormat='{0:yyyy-MM-dd}'}" 
+                                   FontSize="12" 
+                                   TextColor="Gray"
+                                   HorizontalOptions="End"/>
+
+                            <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="10" Margin="0,5,0,0">
+                                <Label Text="{Binding Type}" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
+                                <Label Text="{Binding Distance, StringFormat='{0:F0} m'}" TextColor="Gray"/>
+                            </HorizontalStackLayout>
+
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

@@ -3,12 +3,19 @@
     x:Class="MauiStrides.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:MauiStrides"
+    xmlns:local="clr-namespace:MauiStrides.Views"
     Title="MauiStrides">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate local:LoginPage}"
+        Route="LoginPage" />
+
+    <ShellContent
+        Title="Activities"
+        ContentTemplate="{DataTemplate local:ActivitiesPage}"
+        Route="ActivitiesPage" />
+
+   
 
 </Shell>

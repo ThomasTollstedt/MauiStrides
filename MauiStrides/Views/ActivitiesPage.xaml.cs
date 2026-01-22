@@ -1,22 +1,25 @@
+
 using MauiStrides.ViewModels;
 
-namespace MauiStrides;
+namespace MauiStrides.Views;
 
 public partial class ActivitiesPage : ContentPage
 {
     private readonly ActivitiesViewModel _viewModel;
 
     public ActivitiesPage(ActivitiesViewModel viewModel)
-	{
-        _viewModel = viewModel;
+    {
         InitializeComponent();
-        BindingContext = viewModel;
+        _viewModel = viewModel;
+       
+        BindingContext = viewModel; // Ui mot kod
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        // ? No token needed - TokenService handles it automatically
+        
+        await _viewModel.LoadAthleteProfile();
         await _viewModel.LoadActivitiesAsync();
     }
 }

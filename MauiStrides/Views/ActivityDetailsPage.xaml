@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MauiStrides.Models"
+             x:Class="MauiStrides.Views.ActivityDetailsPage"
+             Title="{Binding Activity.Name}">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="{Binding Activity.Name}" 
+                   FontSize="24" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center" />
+
+            <Label Text="{Binding Activity.StartDate, StringFormat='{0:yyyy-MM-dd HH:mm}'}"
+                   TextColor="Gray"
+                   HorizontalOptions="Center" />
+
+            <BoxView HeightRequest="1" Color="LightGray" />
+
+            <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" RowSpacing="20">
+
+                <VerticalStackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Center">
+                    <Label Text="Distans" FontSize="12" TextColor="Gray"/>
+                    <Label Text="{Binding Activity.Distance, StringFormat='{0:F0} m'}" 
+                           FontSize="20" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center">
+                    <Label Text="Tid" FontSize="12" TextColor="Gray"/>
+                    <Label Text="{Binding Activity.MovingTime, StringFormat='{0} sek'}" 
+                           FontSize="20" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="Center">
+                    <Label Text="Typ" FontSize="12" TextColor="Gray"/>
+                    <Label Text="{Binding Activity.Type}" 
+                           FontSize="20" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

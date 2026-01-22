@@ -1,6 +1,10 @@
 {
   "profiles": {
-    "Windows Machine": {
+    "MauiStrides (Package)": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": false
+    },
+    "MauiStrides (Unpackaged)": {
       "commandName": "Project",
       "nativeDebugging": false
     }

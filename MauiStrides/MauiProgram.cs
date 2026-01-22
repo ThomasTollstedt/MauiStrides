@@ -5,6 +5,12 @@ using MauiStrides.Client;
 using MauiStrides.Services;
 using MauiStrides.ViewModels;
 using System.Reflection;
+using MauiStrides.Views;
+using Microsoft.Maui.LifecycleEvents;
+#if WINDOWS
+using Microsoft.Windows.AppLifecycle;
+using Windows.ApplicationModel.Activation;
+#endif
 
 namespace MauiStrides
 {
@@ -19,6 +25,42 @@ namespace MauiStrides
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                })
+                .ConfigureLifecycleEvents(events =>
+                {
+#if WINDOWS
+                events.AddWindows(windows => windows
+                    .OnActivated((window, args) =>
+                    {
+                        // Vi hämtar aktiverings-datan från den globala instansen istället för 'args'
+                        // Detta undviker krockar och CS-fel.
+                        var appInstance = Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent();
+                        if (appInstance == null) return;
+
+                        var activationArgs = appInstance.GetActivatedEventArgs();
+
+                        // Kolla om appen väcktes av ett protokoll (mauistrides://)
+                        if (activationArgs.Kind == Microsoft.Windows.AppLifecycle.ExtendedActivationKind.Protocol)
+                        {
+                            // Konvertera datan till rätt typ
+                            var data = activationArgs.Data as Windows.ApplicationModel.Activation.IProtocolActivatedEventArgs;
+                            
+                            if (data != null)
+                            {
+                                var uri = data.Uri.AbsoluteUri;
+                                System.Diagnostics.Debug.WriteLine($"📢 [Windows] Protocol URL: {uri}");
+
+                                // Hämta StravaService och skicka in URL:en
+                                // Vi måste köra detta på MainThread för att vara säkra
+                                MainThread.BeginInvokeOnMainThread(() => 
+                                {
+                                    var stravaService = IPlatformApplication.Current.Services.GetService<MauiStrides.Services.StravaService>();
+                                    stravaService?.HandleAuthCallbackAsync(uri);
+                                });
+                            }
+                        }
+                    }));
+#endif
                 });
 
             // ✅ LOAD CONFIGURATION FROM appsettings.json
@@ -61,6 +103,10 @@ namespace MauiStrides
             // Register ViewModels and Pages
             builder.Services.AddTransient<ActivitiesViewModel>();
             builder.Services.AddTransient<ActivitiesPage>();
+            builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddTransient<ActivityDetailsViewModel>();
+            builder.Services.AddTransient<ActivityDetailsPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
