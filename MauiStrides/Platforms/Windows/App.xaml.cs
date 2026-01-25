@@ -68,10 +68,10 @@ namespace MauiStrides.WinUI
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         // Hämta StravaService via den globala containern
-                        var stravaService = IPlatformApplication.Current.Services.GetService<IStravaService>();
+                        var stravaAuthService = IPlatformApplication.Current.Services.GetService<IStravaAuthService>();
 
                         // Kör din metod!
-                        stravaService?.HandleAuthCallbackAsync(uri);
+                        stravaAuthService?.HandleAuthCallbackAsync(uri);
                     });
                 }
             }

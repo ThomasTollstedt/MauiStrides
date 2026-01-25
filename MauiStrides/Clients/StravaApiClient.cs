@@ -9,49 +9,45 @@ namespace MauiStrides.Client
     {
         private readonly HttpClient _httpClient;
         private readonly ITokenService _tokenService;
-        private const string BaseUrl = "https://www.strava.com/api/v3/";
+        //private const string BaseUrl = "https://www.strava.com/api/v3/";
 
         public StravaApiClient(HttpClient httpClient, ITokenService tokenService)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri(BaseUrl);
             _tokenService = tokenService;
         }
 
-        public async Task<List<Activity>> GetActivitiesAsync()
+        public async Task<List<ActivityDTO>> GetActivitiesAsync()
         {
             await SetAuthorizationHeaderAsync();
-            return await GetAsync<List<Activity>>("athlete/activities");
+            return await GetAsync<List<ActivityDTO>>("athlete/activities");
         }
 
         //overload för pagineringen
-        public async Task<List<Activity>> GetActivitiesAsync(int page, int perPage)
+        public async Task<List<ActivityDTO>> GetActivitiesAsync(int page, int perPage)
         {
             await SetAuthorizationHeaderAsync();
 
             string url = $"athlete/activities?page={page}&per_page={perPage}";
            
-            return await GetAsync<List<Activity>>(url);
+            return await GetAsync<List<ActivityDTO>>(url);
         }
 
         
-        public async Task<AthleteProfile> GetAthleteProfileAsync()
+        public async Task<AthleteProfileDTO> GetAthleteProfileAsync()
         {
             await SetAuthorizationHeaderAsync();
-            return await GetAsync<AthleteProfile>("athlete");
+            return await GetAsync<AthleteProfileDTO>("athlete");
         }
 
       
-        public async Task<Activity> GetActivityDetailsAsync(long activityId)
+        public async Task<ActivityDTO> GetActivityDetailsAsync(long activityId)
         {
             await SetAuthorizationHeaderAsync();
-            return await GetAsync<Activity>($"activities/{activityId}");
+            return await GetAsync<ActivityDTO>($"activities/{activityId}");
         }
 
-        /// <summary>
-        /// Automatically gets valid token and sets Authorization header
-        /// Handles token refresh transparently
-        /// </summary>
+     // Sätts vid varje anrop, Delegating Handler att föredra. 
         private async Task SetAuthorizationHeaderAsync()
         {
             var accessToken = await _tokenService.GetValidAccessTokenAsync();
@@ -59,9 +55,7 @@ namespace MauiStrides.Client
                 new AuthenticationHeaderValue("Bearer", accessToken);
         }
 
-        /// <summary>
-        /// Generic GET request helper (DRY principle)
-        /// </summary>
+        
         private async Task<T> GetAsync<T>(string endpoint)
         {
             var response = await _httpClient.GetAsync(endpoint);

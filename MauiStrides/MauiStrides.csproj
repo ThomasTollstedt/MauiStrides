@@ -107,4 +107,8 @@
 	  </PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="Models\AthleteProfile.cs" />
+	</ItemGroup>
+
 </Project>

@@ -181,13 +181,13 @@
                             </VerticalStackLayout>
                         </HorizontalStackLayout>
 
-                        <!-- Calories -->
+                        <!-- Work kJ -->
                         <HorizontalStackLayout Grid.Column="1" Spacing="10">
                             <Label Text="🔥" FontSize="20" VerticalOptions="Center"/>
                             <VerticalStackLayout>
-                                <Label Text="{Binding Activity.CaloriesDisplay}" 
+                                <Label Text="{Binding Activity.kJDisplay}" 
                                        Style="{StaticResource DataValueStyle}"/>
-                                <Label Text="Calories" 
+                                <Label Text="kiloJoules" 
                                        FontSize="12"
                                        TextColor="{StaticResource AppSecondary}"/>
                             </VerticalStackLayout>

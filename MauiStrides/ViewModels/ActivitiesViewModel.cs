@@ -10,7 +10,7 @@ namespace MauiStrides.ViewModels
 {
     public partial class ActivitiesViewModel : ViewModelBase
     {
-        private readonly IStravaService _stravaService;
+        private readonly IActivityService _activityService;
 
         // ============================================
         // PAGINATION STATE
@@ -54,9 +54,9 @@ namespace MauiStrides.ViewModels
         // ============================================
         // CONSTRUCTOR
         // ============================================
-        public ActivitiesViewModel(IStravaService stravaService)
+        public ActivitiesViewModel(IActivityService activityService)
         {
-            _stravaService = stravaService;
+            _activityService = activityService;
             Title = "Aktiviteter";
         }
 
@@ -78,7 +78,7 @@ namespace MauiStrides.ViewModels
             try
             {
                 // Fetch first page from API
-                var activities = await _stravaService.GetActivitiesAsync(_currentPage, _pageSize);
+                var activities = await _activityService.GetActivitiesAsync(_currentPage, _pageSize);
 
                 // Check if we got less than a full page (means no more data exists)
                 if (activities.Count < _pageSize)
@@ -120,7 +120,7 @@ namespace MauiStrides.ViewModels
                 _currentPage++;
 
                 // Fetch next page from API
-                var newActivities = await _stravaService.GetActivitiesAsync(_currentPage, _pageSize);
+                var newActivities = await _activityService.GetActivitiesAsync(_currentPage, _pageSize);
 
                 // Check if this is the last page
                 if (newActivities.Count < _pageSize)
@@ -193,7 +193,7 @@ namespace MauiStrides.ViewModels
         // ============================================
         public async Task LoadAthleteProfile()
         {
-            var profile = await _stravaService.GetAthleteProfileAsync();
+            var profile = await _activityService.GetAthleteProfileAsync();
             CurrentAthleteProfile = profile;
         }
 
