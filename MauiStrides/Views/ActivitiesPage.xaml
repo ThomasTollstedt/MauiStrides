@@ -4,9 +4,178 @@
              xmlns:vm="clr-namespace:MauiStrides.ViewModels"
              xmlns:models="clr-namespace:MauiStrides.Models"
              x:Class="MauiStrides.Views.ActivitiesPage"
-             Title="Activities">
+             Title="Activities"
+             BackgroundColor="{StaticResource AppBackground}">
 
-    <Grid RowDefinitions="auto, *">
+    <Grid RowDefinitions="Auto, Auto, *">
+
+        <VerticalStackLayout Grid.Row="0" Padding="20" Spacing="20">
+            <Grid ColumnDefinitions="*, Auto">
+                <Label Text="Aktiviteter" 
+                       Style="{StaticResource HeaderLabelStyle}"
+                       VerticalOptions="Center"/>
+
+                <Border Grid.Column="1" StrokeShape="RoundRectangle 25" 
+                        HeightRequest="50" WidthRequest="50" StrokeThickness="0">
+                    <Image Source="{Binding CurrentAthleteProfile.ProfileMedium}" Aspect="AspectFill">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToProfileCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Border>
+            </Grid>
+
+            <Border StrokeShape="RoundRectangle 10" StrokeThickness="0" 
+                    BackgroundColor="{StaticResource AppSurface}" Padding="10,0">
+                <SearchBar Placeholder="Sök aktivitet..." 
+                           TextColor="{StaticResource AppText}"
+                           PlaceholderColor="{StaticResource AppSecondary}"
+                           Text="{Binding SearchText}"/>
+            </Border>
+        </VerticalStackLayout>
+
+        <ScrollView Grid.Row="1" Orientation="Horizontal" 
+                    HorizontalScrollBarVisibility="Never" Padding="20,0,20,15">
+            <HorizontalStackLayout Spacing="10">
+                
+                <!-- "Alla" Filter Button -->
+                <Button Text="Alla" 
+                        Command="{Binding ApplyFilterCommand}" 
+                        CommandParameter="All"
+                        Style="{StaticResource FilterButtonStyle}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding SelectedFilter}"
+                                     Value="All">
+                            <Setter Property="BackgroundColor" Value="{StaticResource AppPrimary}" />
+                            <Setter Property="TextColor" Value="White" />
+                            <Setter Property="BorderColor" Value="{StaticResource AppPrimary}" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <!-- "Run" Filter Button -->
+                <Button Text="Run" 
+                        Command="{Binding ApplyFilterCommand}" 
+                        CommandParameter="Run"
+                        Style="{StaticResource FilterButtonStyle}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding SelectedFilter}"
+                                     Value="Run">
+                            <Setter Property="BackgroundColor" Value="{StaticResource AppPrimary}" />
+                            <Setter Property="TextColor" Value="White" />
+                            <Setter Property="BorderColor" Value="{StaticResource AppPrimary}" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <!-- "Ride" Filter Button -->
+                <Button Text="Ride" 
+                        Command="{Binding ApplyFilterCommand}" 
+                        CommandParameter="Ride"
+                        Style="{StaticResource FilterButtonStyle}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding SelectedFilter}"
+                                     Value="Ride">
+                            <Setter Property="BackgroundColor" Value="{StaticResource AppPrimary}" />
+                            <Setter Property="TextColor" Value="White" />
+                            <Setter Property="BorderColor" Value="{StaticResource AppPrimary}" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <!-- "VirtualRide" Filter Button -->
+                <Button Text="Virtual Ride" 
+                        Command="{Binding ApplyFilterCommand}" 
+                        CommandParameter="VirtualRide"
+                        Style="{StaticResource FilterButtonStyle}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding SelectedFilter}"
+                                     Value="VirtualRide">
+                            <Setter Property="BackgroundColor" Value="{StaticResource AppPrimary}" />
+                            <Setter Property="TextColor" Value="White" />
+                            <Setter Property="BorderColor" Value="{StaticResource AppPrimary}" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Activities}"
+                        SelectionMode="Single"
+                        SelectionChangedCommand="{Binding GoToDetailsCommand}"
+                        SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}"
+                        RemainingItemsThreshold="5"
+                        RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Activity">
+                    <Grid Padding="20,6">
+                        <Border Style="{StaticResource ActivityCardStyle}">
+                            <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto" ColumnSpacing="15">
+
+                                <Border Grid.RowSpan="2" Style="{StaticResource IconBoxStyle}">
+                                    <Label Text="{Binding SportIcon}" 
+                                           HorizontalOptions="Center" 
+                                           VerticalOptions="Center" 
+                                           FontSize="20"/>
+                                </Border>
+
+                                <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="2">
+                                    <Label Text="{Binding Name}" 
+                                           FontAttributes="Bold" 
+                                           FontSize="16" 
+                                           TextColor="{StaticResource AppText}" 
+                                           LineBreakMode="TailTruncation"/>
+                                    <Label Text="{Binding StartDate, StringFormat='{0:dd MMM • HH:mm}'}" 
+                                           FontSize="12" 
+                                           TextColor="{StaticResource AppSecondary}"/>
+                                </VerticalStackLayout>
+
+                                <HorizontalStackLayout Grid.Column="1" Grid.Row="1" Spacing="15" Margin="0,8,0,0">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Label Text="&#xED5C;" Style="{StaticResource FluentIconStyle}"/>
+                                        <Label Text="{Binding DistanceKm}" Style="{StaticResource DataValueStyle}"/>
+                                    </HorizontalStackLayout>
+
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Label Text="&#xE917;" Style="{StaticResource FluentIconStyle}"/>
+                                        <Label Text="{Binding TimeDisplay}" Style="{StaticResource DataValueStyle}"/>
+                                    </HorizontalStackLayout>
+                                </HorizontalStackLayout>
+
+                                <Label Grid.Column="2" Grid.RowSpan="2" 
+                                       Text="&#xE76C;" 
+                                       Style="{StaticResource FluentIconStyle}" 
+                                       TextColor="{StaticResource AppSecondary}"/>
+
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.Footer>
+                <StackLayout Padding="20" IsVisible="{Binding IsFooterLoading}">
+                    <ActivityIndicator IsRunning="True" 
+                                       Color="{StaticResource AppPrimary}" 
+                                       HorizontalOptions="Center"/>
+                </StackLayout>
+            </CollectionView.Footer>
+
+        </CollectionView>
+    </Grid>
+
+</ContentPage>
+
+
+
+<!--<Grid RowDefinitions="auto, *">
         <Grid Grid.Row="0" Padding="10" BackgroundColor="#FC5200">
             <Label Text="Mina Aktiviteter" 
                    VerticalOptions="Center" 
@@ -62,4 +231,4 @@
         </CollectionView>
     </Grid>
 
-</ContentPage>
+</ContentPage>-->

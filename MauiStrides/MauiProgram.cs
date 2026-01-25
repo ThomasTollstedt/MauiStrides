@@ -7,6 +7,8 @@ using MauiStrides.ViewModels;
 using System.Reflection;
 using MauiStrides.Views;
 using Microsoft.Maui.LifecycleEvents;
+using Microcharts.Maui;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 #if WINDOWS
 using Microsoft.Windows.AppLifecycle;
 using Windows.ApplicationModel.Activation;
@@ -21,10 +23,13 @@ namespace MauiStrides
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMicrocharts()
+                .UseSkiaSharp()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("SegoeFluentIcons.ttf", "FluentIcons");
                 })
                 .ConfigureLifecycleEvents(events =>
                 {
@@ -107,6 +112,8 @@ namespace MauiStrides
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<ActivityDetailsViewModel>();
             builder.Services.AddTransient<ActivityDetailsPage>();
+            builder.Services.AddTransient<SummaryViewModel>();
+            builder.Services.AddTransient<SummaryPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

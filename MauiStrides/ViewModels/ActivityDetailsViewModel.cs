@@ -6,10 +6,15 @@ using System.Text;
 
 namespace MauiStrides.ViewModels
 {
-    [QueryProperty(nameof(Activity), "Activity")]
-    public partial class ActivityDetailsViewModel : ObservableObject
+    [QueryProperty(nameof(Activity), nameof(Activity))]
+    public partial class ActivityDetailsViewModel : ViewModelBase
     {
         [ObservableProperty]
-       Activity activity;
+        private Activity activity = new();
+
+        public ActivityDetailsViewModel()
+        {
+            Title = "Activity Details";
+        }
     }
 }

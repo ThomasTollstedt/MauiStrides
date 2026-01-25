@@ -8,18 +8,18 @@ namespace MauiStrides.Services
         private const string AccessTokenKey = "strava_access_token";
         private const string RefreshTokenKey = "strava_refresh_token";
         private const string ExpiresAtKey = "strava_expires_at";
-        
+
         private readonly HttpClient _httpClient;
         private readonly string _clientId;
         private readonly string _clientSecret;
 
-        // ✅ UPDATED CONSTRUCTOR - uses StravaConfiguration
+
         public TokenService(HttpClient httpClient, StravaConfiguration configuration)
         {
             _httpClient = httpClient;
             _clientId = configuration.ClientId;
             _clientSecret = configuration.ClientSecret;
-            
+
             if (string.IsNullOrEmpty(_clientId) || string.IsNullOrEmpty(_clientSecret))
             {
                 throw new InvalidOperationException("Strava ClientId and ClientSecret must be configured in appsettings.json");
@@ -102,8 +102,8 @@ namespace MauiStrides.Services
             }
             // Store the tokens
             await StoreTokensAsync(
-                tokenResponse.AccessToken, 
-                tokenResponse.RefreshToken, 
+                tokenResponse.AccessToken,
+                tokenResponse.RefreshToken,
                 tokenResponse.ExpiresAt);
             return tokenResponse.AccessToken;
         }
@@ -114,7 +114,7 @@ namespace MauiStrides.Services
         private async Task<string> RefreshAccessTokenAsync()
         {
             var refreshToken = await SecureStorage.GetAsync(RefreshTokenKey);
-            
+
             if (string.IsNullOrEmpty(refreshToken))
             {
                 throw new InvalidOperationException("No refresh token found. User needs to re-authenticate.");
@@ -132,7 +132,7 @@ namespace MauiStrides.Services
             try
             {
                 var response = await _httpClient.PostAsync("https://www.strava.com/oauth/token", requestContent);
-                
+
                 if (!response.IsSuccessStatusCode)
                 {
                     var error = await response.Content.ReadAsStringAsync();
@@ -140,7 +140,7 @@ namespace MauiStrides.Services
                 }
 
                 var tokenResponse = await response.Content.ReadFromJsonAsync<StravaTokenResponse>();
-                
+
                 if (tokenResponse == null)
                 {
                     throw new InvalidOperationException("Failed to deserialize token response");
@@ -148,8 +148,8 @@ namespace MauiStrides.Services
 
                 // Store the NEW tokens (Strava rotates refresh tokens!)
                 await StoreTokensAsync(
-                    tokenResponse.AccessToken, 
-                    tokenResponse.RefreshToken, 
+                    tokenResponse.AccessToken,
+                    tokenResponse.RefreshToken,
                     tokenResponse.ExpiresAt);
 
                 return tokenResponse.AccessToken;
@@ -161,5 +161,33 @@ namespace MauiStrides.Services
                 throw new InvalidOperationException("Token refresh failed. Please log in again.", ex);
             }
         }
+
+        //    public bool HasValidToken()
+        //    {
+        //        try
+        //        {
+        //            var accessToken = SecureStorage.GetAsync("strava_access_token").Result;
+        //            var expiresAt = SecureStorage.GetAsync("strava_expires_at").Result;
+
+        //            if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(expiresAt))
+        //            {
+        //                return false;
+        //            }
+
+        //            // Check if token is expired
+        //            if (long.TryParse(expiresAt, out long expiresAtUnix))
+        //            {
+        //                var expiryTime = DateTimeOffset.FromUnixTimeSeconds(expiresAtUnix);
+        //                return DateTimeOffset.UtcNow < expiryTime;
+        //            }
+
+        //            return false;
+        //        }
+        //        catch
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //}
     }
 }

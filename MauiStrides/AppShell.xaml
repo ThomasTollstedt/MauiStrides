@@ -16,6 +16,9 @@
         ContentTemplate="{DataTemplate local:ActivitiesPage}"
         Route="ActivitiesPage" />
 
-   
+    <ShellContent
+    Title="Summary Reports"
+    ContentTemplate="{DataTemplate local:SummaryPage}"
+    Route="SummaryPage" />
 
 </Shell>

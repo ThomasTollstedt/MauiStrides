@@ -1,34 +1,239 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MauiStrides.ViewModels"
              xmlns:models="clr-namespace:MauiStrides.Models"
              x:Class="MauiStrides.Views.ActivityDetailsPage"
-             Title="{Binding Activity.Name}">
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+             x:DataType="vm:ActivityDetailsViewModel"
+             Title="Activity Details"
+             BackgroundColor="{StaticResource AppBackground}">
 
-            <Label Text="{Binding Activity.Name}" 
-                   FontSize="24" 
-                   FontAttributes="Bold" 
-                   HorizontalOptions="Center" />
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- HEADER CARD -->
+            <Border Style="{StaticResource ActivityCardStyle}">
+                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="15">
+
+                    <Border Grid.Column="0" 
+                            Style="{StaticResource IconBoxStyle}" 
+                            WidthRequest="60" 
+                            HeightRequest="60">
+                        <Label Text="{Binding Activity.SportIcon}" 
+                               FontSize="32"
+                               HorizontalOptions="Center" 
+                               VerticalOptions="Center"/>
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="5">
+                        <Label Text="{Binding Activity.Name}" 
+                               FontSize="20" 
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource AppText}"
+                               LineBreakMode="WordWrap"/>
+                        <Label Text="{Binding Activity.DateDisplay}" 
+                               FontSize="14"
+                               TextColor="{StaticResource AppSecondary}"/>
+
+                       
+                    </VerticalStackLayout>
+                    
+                    
+
+                </Grid>
+            </Border>
+
+            <!-- PRIMARY STATS -->
+            <Border Style="{StaticResource ActivityCardStyle}">
+                <Grid ColumnDefinitions="*, *, *" 
+                      RowDefinitions="Auto, Auto" 
+                      RowSpacing="20">
+
+                    <!-- Distance -->
+                    <VerticalStackLayout Grid.Column="0" Spacing="8" HorizontalOptions="Center">
+                        <Label Text="🏁" FontSize="24" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Activity.DistanceKm}" 
+                               Style="{StaticResource DataValueStyle}"
+                               FontSize="18"
+                               HorizontalOptions="Center"/>
+                        <Label Text="Distance" 
+                               FontSize="12"
+                               TextColor="{StaticResource AppSecondary}"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <!-- Moving Time -->
+                    <VerticalStackLayout Grid.Column="1" Spacing="8" HorizontalOptions="Center">
+                        <Label Text="⏱️" FontSize="24" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Activity.TimeDisplay}" 
+                               Style="{StaticResource DataValueStyle}"
+                               FontSize="18"
+                               HorizontalOptions="Center"/>
+                        <Label Text="Time" 
+                               FontSize="12"
+                               TextColor="{StaticResource AppSecondary}"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <!-- Elevation -->
+                    <VerticalStackLayout Grid.Column="2" Spacing="8" HorizontalOptions="Center">
+                        <Label Text="⛰️" FontSize="24" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Activity.ElevationDisplay}" 
+                               Style="{StaticResource DataValueStyle}"
+                               FontSize="18"
+                               HorizontalOptions="Center"/>
+                        <Label Text="Elevation" 
+                               FontSize="12"
+                               TextColor="{StaticResource AppSecondary}"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <!-- Pace -->
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="8" HorizontalOptions="Center">
+                        <Label Text="⚡" FontSize="24" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Activity.PaceDisplay}" 
+                               Style="{StaticResource DataValueStyle}"
+                               FontSize="18"
+                               HorizontalOptions="Center"/>
+                        <Label Text="Pace" 
+                               FontSize="12"
+                               TextColor="{StaticResource AppSecondary}"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <!-- Average Speed -->
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="8" HorizontalOptions="Center">
+                        <Label Text="💨" FontSize="24" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Activity.AverageSpeedDisplay}" 
+                               Style="{StaticResource DataValueStyle}"
+                               FontSize="18"
+                               HorizontalOptions="Center"/>
+                        <Label Text="Avg Speed" 
+                               FontSize="12"
+                               TextColor="{StaticResource AppSecondary}"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <!-- Max Speed -->
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="2" Spacing="8" HorizontalOptions="Center">
+                        <Label Text="🚀" FontSize="24" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Activity.MaxSpeedDisplay}" 
+                               Style="{StaticResource DataValueStyle}"
+                               FontSize="18"
+                               HorizontalOptions="Center"/>
+                        <Label Text="Max Speed" 
+                               FontSize="12"
+                               TextColor="{StaticResource AppSecondary}"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                </Grid>
+            </Border>
+
+            <!-- PERFORMANCE METRICS -->
+            <Border Style="{StaticResource ActivityCardStyle}">
+                <VerticalStackLayout Spacing="15">
+
+                    <Label Text="Performance" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource AppText}"/>
+
+                    <Grid ColumnDefinitions="*, *" RowSpacing="15" ColumnSpacing="15">
+
+                        <!-- Heart Rate -->
+                        <HorizontalStackLayout Grid.Column="0" Spacing="10">
+                            <Label Text="❤️" FontSize="20" VerticalOptions="Center"/>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Activity.HeartrateDisplay}" 
+                                       Style="{StaticResource DataValueStyle}"/>
+                                <Label Text="Heart Rate" 
+                                       FontSize="12"
+                                       TextColor="{StaticResource AppSecondary}"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+
+                        <!-- Cadence -->
+                        <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                            <Label Text="🔄" FontSize="20" VerticalOptions="Center"/>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Activity.CadenceDisplay}" 
+                                       Style="{StaticResource DataValueStyle}"/>
+                                <Label Text="Cadence" 
+                                       FontSize="12"
+                                       TextColor="{StaticResource AppSecondary}"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+
+                        <!-- Power -->
+                        <HorizontalStackLayout Grid.Column="0" Spacing="10">
+                            <Label Text="⚡" FontSize="20" VerticalOptions="Center"/>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Activity.PowerDisplay}" 
+                                       Style="{StaticResource DataValueStyle}"/>
+                                <Label Text="Power" 
+                                       FontSize="12"
+                                       TextColor="{StaticResource AppSecondary}"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+
+                        <!-- Calories -->
+                        <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                            <Label Text="🔥" FontSize="20" VerticalOptions="Center"/>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Activity.CaloriesDisplay}" 
+                                       Style="{StaticResource DataValueStyle}"/>
+                                <Label Text="Calories" 
+                                       FontSize="12"
+                                       TextColor="{StaticResource AppSecondary}"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             
+             xmlns:models="clr-namespace:MauiStrides.Models"
+             x:Class="MauiStrides.Views.ActivityDetailsPage"
+             Title="MAUIStrides - Details">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
 
             <Label Text="{Binding Activity.StartDate, StringFormat='{0:yyyy-MM-dd HH:mm}'}"
                    TextColor="Gray"
                    HorizontalOptions="Center" />
 
             <BoxView HeightRequest="1" Color="LightGray" />
+            
 
             <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" RowSpacing="20">
 
                 <VerticalStackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Center">
                     <Label Text="Distans" FontSize="12" TextColor="Gray"/>
-                    <Label Text="{Binding Activity.Distance, StringFormat='{0:F0} m'}" 
+                    <Label Text="{Binding Activity.DistanceKm, StringFormat='{0:F0}'}" 
                            FontSize="20" FontAttributes="Bold"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center">
                     <Label Text="Tid" FontSize="12" TextColor="Gray"/>
-                    <Label Text="{Binding Activity.MovingTime, StringFormat='{0} sek'}" 
+                    <Label Text="{Binding Activity.TimeDisplay, StringFormat='{0}'}" 
                            FontSize="20" FontAttributes="Bold"/>
                 </VerticalStackLayout>
 
@@ -36,11 +241,21 @@
                     <Label Text="Typ" FontSize="12" TextColor="Gray"/>
                     <Label Text="{Binding Activity.Type}" 
                            FontSize="20" FontAttributes="Bold"/>
-                </VerticalStackLayout>
+                    
+                <VerticalStackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Center">
+                    <Label Text="Tempo" FontSize="12" TextColor="Gray"/>
+                    <Label Text="{Binding Activity.PaceDisplay}" FontSize="20" FontAttributes="Bold"/>
+                    </VerticalStackLayout>
 
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Center">
+                        <Label Text="Power(W)" FontSize="12" TextColor="Gray"/>
+                        <Label Text="{Binding Activity.AverageWatts}" FontSize="20" FontAttributes="Bold"/>
+                    </VerticalStackLayout>
+                    
+
+                </VerticalStackLayout>
             </Grid>
 
         </VerticalStackLayout>
     </ScrollView>
-
-</ContentPage>
+</ContentPage>-->

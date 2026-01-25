@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MauiStrides.Services;
+using MauiStrides.Views;
 
 namespace MauiStrides
 {

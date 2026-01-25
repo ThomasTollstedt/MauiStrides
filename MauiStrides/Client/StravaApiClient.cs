@@ -18,36 +18,35 @@ namespace MauiStrides.Client
             _tokenService = tokenService;
         }
 
-        /// <summary>
-        /// Gets all activities for the authenticated athlete (token handled automatically)
-        /// </summary>
         public async Task<List<Activity>> GetActivitiesAsync()
         {
             await SetAuthorizationHeaderAsync();
             return await GetAsync<List<Activity>>("athlete/activities");
         }
 
-        /// <summary>
-        /// Gets the authenticated athlete's profile (token handled automatically)
-        /// </summary>
+        //overload för pagineringen
+        public async Task<List<Activity>> GetActivitiesAsync(int page, int perPage)
+        {
+            await SetAuthorizationHeaderAsync();
+
+            string url = $"athlete/activities?page={page}&per_page={perPage}";
+           
+            return await GetAsync<List<Activity>>(url);
+        }
+
+        
         public async Task<AthleteProfile> GetAthleteProfileAsync()
         {
             await SetAuthorizationHeaderAsync();
             return await GetAsync<AthleteProfile>("athlete");
         }
 
-        /// <summary>
-        /// Gets detailed information about a specific activity (token handled automatically)
-        /// </summary>
+      
         public async Task<Activity> GetActivityDetailsAsync(long activityId)
         {
             await SetAuthorizationHeaderAsync();
             return await GetAsync<Activity>($"activities/{activityId}");
         }
-
-        // ============================================
-        // PRIVATE HELPER METHODS
-        // ============================================
 
         /// <summary>
         /// Automatically gets valid token and sets Authorization header
