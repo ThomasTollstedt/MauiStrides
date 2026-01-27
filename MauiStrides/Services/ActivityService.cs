@@ -32,11 +32,6 @@ namespace MauiStrides.Services
             return allActivities;
         }
 
-        public async Task<AthleteProfile> GetAthleteProfileAsync()
-        {
-            return await _activityRepository.GetAthleteProfileAsync();
-        }
-
         public async Task<Activity> GetActivityDetailsAsync(long activityId)
         {
             return await _activityRepository.GetActivityDetailsAsync(activityId);

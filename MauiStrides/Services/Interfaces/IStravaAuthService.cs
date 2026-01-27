@@ -8,9 +8,7 @@ namespace MauiStrides.Services
     {
         Task HandleAuthCallbackAsync(string uriString);
         Task LoginServiceAsync();
-        
-
-
+        Task LogoutAsync();
     }
 
 }

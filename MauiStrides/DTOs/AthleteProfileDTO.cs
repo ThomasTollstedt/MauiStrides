@@ -35,7 +35,10 @@ namespace MauiStrides.Models
         public string ProfileMedium { get; set; } 
 
         [JsonPropertyName("profile")]
-        public string Profile { get; set; } 
+        public string Profile { get; set; }
+
+        [JsonPropertyName("club")]
+        public string Club { get; set; }
 
 
     }

@@ -4,19 +4,27 @@
              xmlns:vm="clr-namespace:MauiStrides.ViewModels"
              xmlns:models="clr-namespace:MauiStrides.Models"
              x:Class="MauiStrides.Views.ActivitiesPage"
+             x:Name="ThisPage" 
              Title="Activities"
              BackgroundColor="{StaticResource AppBackground}">
 
     <Grid RowDefinitions="Auto, Auto, *">
 
-        <VerticalStackLayout Grid.Row="0" Padding="20" Spacing="20">
-            <Grid ColumnDefinitions="*, Auto">
+        <VerticalStackLayout Grid.Row="0" Padding="12" Spacing="12">
+            <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
                 <Label Text="Aktiviteter" 
-                       Style="{StaticResource HeaderLabelStyle}"
-                       VerticalOptions="Center"/>
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource AppText}"
+                       VerticalOptions="Center"
+                       LineBreakMode="NoWrap"/>
 
-                <Border Grid.Column="1" StrokeShape="RoundRectangle 25" 
-                        HeightRequest="50" WidthRequest="50" StrokeThickness="0">
+                <Border Grid.Column="1" 
+                        StrokeShape="RoundRectangle 22" 
+                        HeightRequest="44" 
+                        WidthRequest="44" 
+                        StrokeThickness="0"
+                        BindingContext="{Binding Source={x:Reference ThisPage}, Path=ProfileViewModel}">
                     <Image Source="{Binding CurrentAthleteProfile.ProfileMedium}" Aspect="AspectFill">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoToProfileCommand}" />
@@ -26,23 +34,29 @@
             </Grid>
 
             <Border StrokeShape="RoundRectangle 10" StrokeThickness="0" 
-                    BackgroundColor="{StaticResource AppSurface}" Padding="10,0">
+                    BackgroundColor="{StaticResource AppSurface}" Padding="8,0">
                 <SearchBar Placeholder="Sök aktivitet..." 
                            TextColor="{StaticResource AppText}"
                            PlaceholderColor="{StaticResource AppSecondary}"
-                           Text="{Binding SearchText}"/>
+                           Text="{Binding SearchText}"
+                           FontSize="14"/>
             </Border>
         </VerticalStackLayout>
 
         <ScrollView Grid.Row="1" Orientation="Horizontal" 
-                    HorizontalScrollBarVisibility="Never" Padding="20,0,20,15">
-            <HorizontalStackLayout Spacing="10">
+                    HorizontalScrollBarVisibility="Never" 
+                    Padding="12,0,12,10">
+            <HorizontalStackLayout Spacing="6">
                 
                 <!-- "Alla" Filter Button -->
                 <Button Text="Alla" 
                         Command="{Binding ApplyFilterCommand}" 
                         CommandParameter="All"
-                        Style="{StaticResource FilterButtonStyle}">
+                        FontSize="12"
+                        Padding="10,0"
+                        CornerRadius="18"
+                        HeightRequest="36"
+                        BorderWidth="1">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding SelectedFilter}"
@@ -58,7 +72,11 @@
                 <Button Text="Run" 
                         Command="{Binding ApplyFilterCommand}" 
                         CommandParameter="Run"
-                        Style="{StaticResource FilterButtonStyle}">
+                        FontSize="12"
+                        Padding="10,0"
+                        CornerRadius="18"
+                        HeightRequest="36"
+                        BorderWidth="1">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding SelectedFilter}"
@@ -74,7 +92,11 @@
                 <Button Text="Ride" 
                         Command="{Binding ApplyFilterCommand}" 
                         CommandParameter="Ride"
-                        Style="{StaticResource FilterButtonStyle}">
+                        FontSize="12"
+                        Padding="10,0"
+                        CornerRadius="18"
+                        HeightRequest="36"
+                        BorderWidth="1">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding SelectedFilter}"
@@ -86,11 +108,15 @@
                     </Button.Triggers>
                 </Button>
 
-                <!-- "VirtualRide" Filter Button -->
-                <Button Text="Virtual Ride" 
+                <!-- "Virtual Ride" Filter Button -->
+                <Button Text="VRide" 
                         Command="{Binding ApplyFilterCommand}" 
                         CommandParameter="VirtualRide"
-                        Style="{StaticResource FilterButtonStyle}">
+                        FontSize="12"
+                        Padding="10,0"
+                        CornerRadius="18"
+                        HeightRequest="36"
+                        BorderWidth="1">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding SelectedFilter}"
@@ -115,44 +141,73 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Activity">
-                    <Grid Padding="20,6">
-                        <Border Style="{StaticResource ActivityCardStyle}">
-                            <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto" ColumnSpacing="15">
+                    <Grid Padding="12,4">
+                        <Border Style="{StaticResource ActivityCardStyle}" Padding="12">
+                            <Grid ColumnDefinitions="Auto, *, Auto" 
+                                  RowDefinitions="Auto, Auto" 
+                                  ColumnSpacing="10">
 
-                                <Border Grid.RowSpan="2" Style="{StaticResource IconBoxStyle}">
+                                <Border Grid.RowSpan="2" 
+                                        HeightRequest="38"
+                                        WidthRequest="38"
+                                        StrokeShape="RoundRectangle 19"
+                                        BackgroundColor="{StaticResource AppBackground}"
+                                        StrokeThickness="0"
+                                        VerticalOptions="Center">
                                     <Label Text="{Binding SportIcon}" 
                                            HorizontalOptions="Center" 
                                            VerticalOptions="Center" 
-                                           FontSize="20"/>
+                                           FontSize="16"/>
                                 </Border>
 
                                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="2">
                                     <Label Text="{Binding Name}" 
                                            FontAttributes="Bold" 
-                                           FontSize="16" 
+                                           FontSize="14" 
                                            TextColor="{StaticResource AppText}" 
-                                           LineBreakMode="TailTruncation"/>
+                                           LineBreakMode="TailTruncation"
+                                           MaxLines="1"/>
                                     <Label Text="{Binding StartDate, StringFormat='{0:dd MMM • HH:mm}'}" 
-                                           FontSize="12" 
+                                           FontSize="11" 
                                            TextColor="{StaticResource AppSecondary}"/>
                                 </VerticalStackLayout>
 
-                                <HorizontalStackLayout Grid.Column="1" Grid.Row="1" Spacing="15" Margin="0,8,0,0">
-                                    <HorizontalStackLayout Spacing="6">
-                                        <Label Text="&#xED5C;" Style="{StaticResource FluentIconStyle}"/>
-                                        <Label Text="{Binding DistanceKm}" Style="{StaticResource DataValueStyle}"/>
+                                <HorizontalStackLayout Grid.Column="1" Grid.Row="1" 
+                                                       Spacing="8" 
+                                                       Margin="0,4,0,0">
+                                    <HorizontalStackLayout Spacing="4">
+                                        <Label Text="&#xED5C;" 
+                                               FontFamily="Segoe Fluent Icons"
+                                               FontSize="13"
+                                               TextColor="{StaticResource AppText}"
+                                               VerticalOptions="Center"/>
+                                        <Label Text="{Binding DistanceKm}" 
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource AppText}"
+                                               VerticalOptions="Center"/>
                                     </HorizontalStackLayout>
 
-                                    <HorizontalStackLayout Spacing="6">
-                                        <Label Text="&#xE917;" Style="{StaticResource FluentIconStyle}"/>
-                                        <Label Text="{Binding TimeDisplay}" Style="{StaticResource DataValueStyle}"/>
+                                    <HorizontalStackLayout Spacing="4">
+                                        <Label Text="&#xE917;" 
+                                               FontFamily="Segoe Fluent Icons"
+                                               FontSize="13"
+                                               TextColor="{StaticResource AppText}"
+                                               VerticalOptions="Center"/>
+                                        <Label Text="{Binding TimeDisplay}" 
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource AppText}"
+                                               VerticalOptions="Center"/>
                                     </HorizontalStackLayout>
                                 </HorizontalStackLayout>
 
                                 <Label Grid.Column="2" Grid.RowSpan="2" 
                                        Text="&#xE76C;" 
-                                       Style="{StaticResource FluentIconStyle}" 
-                                       TextColor="{StaticResource AppSecondary}"/>
+                                       FontFamily="Segoe Fluent Icons"
+                                       FontSize="14"
+                                       TextColor="{StaticResource AppSecondary}"
+                                       VerticalOptions="Center"/>
 
                             </Grid>
                         </Border>
@@ -172,63 +227,3 @@
     </Grid>
 
 </ContentPage>
-
-
-
-<!--<Grid RowDefinitions="auto, *">
-        <Grid Grid.Row="0" Padding="10" BackgroundColor="#FC5200">
-            <Label Text="Mina Aktiviteter" 
-                   VerticalOptions="Center" 
-                   TextColor="White" 
-                   FontAttributes="Bold"/>
-
-            <Border StrokeShape="RoundRectangle 25"
-                    HeightRequest="50" WidthRequest="50"
-                    HorizontalOptions="End"
-                    Stroke="White"
-                    StrokeThickness="2">
-
-                <Image Source="{Binding CurrentAthleteProfile.ProfileMedium}"
-                       Aspect="AspectFill">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding GoToProfileCommand}" />
-                    </Image.GestureRecognizers>
-                </Image>
-            </Border>
-        </Grid>
-
-        <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Activities}"
-                        SelectionMode="Single"
-                        SelectionChangedCommand="{Binding GoToDetailsCommand}"
-                        SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}">
-
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Activity">
-                    <Border Padding="10" Margin="5" StrokeShape="RoundRectangle 10">
-                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
-
-                            <Label Grid.Row="0" Grid.Column="0" 
-                                   Text="{Binding Name}" 
-                                   FontSize="16" 
-                                   FontAttributes="Bold"/>
-
-                            <Label Grid.Row="0" Grid.Column="1" 
-                                   Text="{Binding StartDate, StringFormat='{0:yyyy-MM-dd}'}" 
-                                   FontSize="12" 
-                                   TextColor="Gray"
-                                   HorizontalOptions="End"/>
-
-                            <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="10" Margin="0,5,0,0">
-                                <Label Text="{Binding Type}" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
-                                <Label Text="{Binding Distance, StringFormat='{0:F0} m'}" TextColor="Gray"/>
-                            </HorizontalStackLayout>
-
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </Grid>
-
-</ContentPage>-->

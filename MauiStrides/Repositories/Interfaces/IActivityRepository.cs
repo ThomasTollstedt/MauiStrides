@@ -13,8 +13,6 @@ namespace MauiStrides.Interfaces
 
         Task<List<Activity>> GetActivitiesAsync(int page, int perPage);
 
-        Task<AthleteProfile> GetAthleteProfileAsync();
-
         Task<Activity> GetActivityDetailsAsync(long activityId);
        
      

@@ -11,6 +11,8 @@ using Microcharts.Maui;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using MauiStrides.Interfaces;
 using MauiStrides.Repositories;
+using MauiStrides.Services.Interfaces;
+using MauiStrides.Repositories.Interfaces;
 #if WINDOWS
 using Microsoft.Windows.AppLifecycle;
 using Windows.ApplicationModel.Activation;
@@ -37,7 +39,23 @@ namespace MauiStrides
                 {
 #if WINDOWS
                 events.AddWindows(windows => windows
-                    .OnActivated((window, args) =>
+                    .OnWindowCreated(window =>
+        {
+           // Simple mobile-friendly window for development
+            window.ExtendsContentIntoTitleBar = false;
+            
+            var handle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(handle);
+            var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+            
+            // iPhone 14 Pro size for testing
+            appWindow.Resize(new Windows.Graphics.SizeInt32(393, 852));
+            
+        }) 
+                
+                
+                
+                .OnActivated((window, args) =>
                     {
                         // Vi hämtar aktiverings-datan från den globala instansen istället för 'args'
                         // Detta undviker krockar och CS-fel.
@@ -114,6 +132,8 @@ namespace MauiStrides
             builder.Services.AddSingleton<IActivityService, ActivityService>();
             builder.Services.AddSingleton<IStravaAuthService, StravaAuthService>();
             builder.Services.AddSingleton<IActivityRepository, ActivityRepository>();
+            builder.Services.AddSingleton<IAthleteService, AthleteService>();
+            builder.Services.AddSingleton<IAthleteRepository, AthleteRepository>();
             
             // Register ViewModels and Pages
             builder.Services.AddTransient<ActivitiesViewModel>();
@@ -124,6 +144,8 @@ namespace MauiStrides
             builder.Services.AddTransient<ActivityDetailsPage>();
             builder.Services.AddTransient<SummaryViewModel>();
             builder.Services.AddTransient<SummaryPage>();
+            builder.Services.AddTransient<ProfileViewModel>();
+            builder.Services.AddTransient<ProfilePage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

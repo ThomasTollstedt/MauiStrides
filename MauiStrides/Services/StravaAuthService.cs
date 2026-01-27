@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MauiStrides.Views;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -36,6 +37,17 @@ namespace MauiStrides.Services
             {
                 System.Diagnostics.Debug.WriteLine($"Callback Error: {ex.Message}");
             }
+        }
+
+        public async Task LogoutAsync()
+        {
+            await _tokenService.ClearTokensAsync();
+
+            await MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                var loginPage = IPlatformApplication.Current.Services.GetService<LoginPage>();
+                Application.Current.MainPage = new NavigationPage(loginPage);
+            });
         }
 
         public async Task LoginServiceAsync()

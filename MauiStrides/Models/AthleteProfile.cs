@@ -27,7 +27,7 @@ namespace MauiStrides.Models
         public string ProfileMedium { get; set; } 
 
         public string Profile { get; set; } 
-
+        public string Club { get; set; }
 
     }
 }

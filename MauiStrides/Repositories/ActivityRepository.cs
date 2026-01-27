@@ -45,32 +45,7 @@ namespace MauiStrides.Repositories
             return activity;
         }
 
-        public async Task<AthleteProfile> GetAthleteProfileAsync()
-        {
-            var profileDetail = await _stravaApiClient.GetAthleteProfileAsync();
-            var profile = MapToDomainProfile(profileDetail);
-
-            return profile;
-        }
-
-        private AthleteProfile MapToDomainProfile(AthleteProfileDTO dto)
-        {
-            return new AthleteProfile
-            { 
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            Id = dto.Id,
-            Bio = dto.Bio,
-            City = dto.City,
-            State = dto.State,
-            Country = dto.Country,
-            Sex = dto.Sex,
-            Weight = dto.Weight,
-            ProfileMedium = dto.ProfileMedium,
-            Profile = dto.Profile
-            };
-        }
-
+    
         private Activity MapToDomain(ActivityDTO dto)
         {
             return new Activity

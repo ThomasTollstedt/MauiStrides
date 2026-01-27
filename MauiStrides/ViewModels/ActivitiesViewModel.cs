@@ -12,25 +12,19 @@ namespace MauiStrides.ViewModels
     {
         private readonly IActivityService _activityService;
 
-        // ============================================
-        // PAGINATION STATE
-        // ============================================
         private int _currentPage = 1;
         private const int _pageSize = 20;
         private bool _isLastPageReached = false;
 
-        // ============================================
-        // DATA LISTS
-        // ============================================
+       
         // Master list: All activities fetched from API
         private readonly List<Activity> _allFetchedActivities = new();
 
         // Filtered list: What the UI displays (Observable)
         public ObservableCollection<Activity> Activities { get; } = new();
 
-        // ============================================
-        // FILTER STATE
-        // ============================================
+      
+
         [ObservableProperty]
         private string searchText = "";
         partial void OnSearchTextChanged(string value) => FilterActivities();
@@ -39,29 +33,16 @@ namespace MauiStrides.ViewModels
         private string selectedFilter = "All";
         partial void OnSelectedFilterChanged(string value) => FilterActivities();
 
-        // ============================================
-        // LOADING STATE
-        // ============================================
         [ObservableProperty]
         private bool isFooterLoading;
 
-        // ============================================
-        // PROFILE DATA
-        // ============================================
-        [ObservableProperty]
-        private AthleteProfile? currentAthleteProfile;
-
-        // ============================================
-        // CONSTRUCTOR
-        // ============================================
+      
         public ActivitiesViewModel(IActivityService activityService)
         {
             _activityService = activityService;
             Title = "Aktiviteter";
         }
 
-        // ============================================
-        // INITIAL LOAD (First Page)
         // ============================================
         public async Task LoadActivitiesAsync()
         {
@@ -103,9 +84,7 @@ namespace MauiStrides.ViewModels
             }
         }
 
-        // ============================================
-        // LOAD MORE (Next Page) - Infinite Scroll
-        // ============================================
+        // Inifinite scroll - Load more data when user scrolls to bottom
         [RelayCommand]
         public async Task LoadMore()
         {
@@ -146,9 +125,6 @@ namespace MauiStrides.ViewModels
             }
         }
 
-        // ============================================
-        // FILTERING LOGIC
-        // ============================================
         private void FilterActivities()
         {
             // Start with all fetched activities from master list
@@ -176,9 +152,7 @@ namespace MauiStrides.ViewModels
             }
         }
 
-        // ============================================
-        // FILTER COMMANDS
-        // ============================================
+       
         [RelayCommand]
         void ApplyFilter(string filterType)
         {
@@ -188,18 +162,7 @@ namespace MauiStrides.ViewModels
             OnPropertyChanged(nameof(SelectedFilter));
         }
 
-        // ============================================
-        // PROFILE LOADING
-        // ============================================
-        public async Task LoadAthleteProfile()
-        {
-            var profile = await _activityService.GetAthleteProfileAsync();
-            CurrentAthleteProfile = profile;
-        }
-
-        // ============================================
-        // NAVIGATION COMMANDS
-        // ============================================
+       
         [RelayCommand]
         [SupportedOSPlatform("windows10.0.17763.0")]
         async Task GoToDetails(Activity activity)
@@ -212,11 +175,5 @@ namespace MauiStrides.ViewModels
             });
         }
 
-        [RelayCommand]
-        [SupportedOSPlatform("windows10.0.17763.0")]
-        async Task GoToProfile()
-        {
-            await Shell.Current.GoToAsync("ProfilePage");
-        }
     }
 }
