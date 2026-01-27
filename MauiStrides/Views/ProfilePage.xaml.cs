@@ -19,9 +19,6 @@ public partial class ProfilePage : ContentPage
 
         await _viewModel.LoadAthleteProfile();
         await _viewModel.LoadAllMonthlyStats();
-        //await _viewModel.LoadCurrentMonthActivityCounter();
-        //await _viewModel.LoadCurrentMonthTotalDuration();
-        //await _viewModel.LoadCurrentMonthTotalDistance();
-        //await _viewModel.LoadCurrentMonthActivityDetailCounter();
+        await _viewModel.LoadFilteredStats();
     }
 }

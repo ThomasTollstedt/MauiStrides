@@ -38,6 +38,8 @@ namespace MauiStrides.Models
                     "VirtualRide" => "🎮",
                     "Walk" => "🚶",
                     "Swim" => "🏊",
+                    "NordicSki" => "⛷️",
+                    "BackcountrySki" => "⛷️",
                     _ => "🤸‍"
                 };
             }

@@ -172,6 +172,156 @@
                 </Grid>
             </Border>
 
+            <!-- ✨ NEW: Date Range & Sport Filter Section -->
+            <Border Style="{StaticResource ActivityCardStyle}" 
+                    Padding="15">
+                <VerticalStackLayout Spacing="12">
+
+                    <!-- Section Title -->
+                    <Label Text="Custom Date Range &amp; Sport Filter" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource AppText}"/>
+
+                    <!-- Date Pickers Row -->
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label Text="Start Date" 
+                                   FontSize="12" 
+                                   TextColor="{StaticResource AppSecondary}"/>
+                            <DatePicker Date="{Binding SelectedStartDate}" 
+                                        Format="MMM dd, yyyy"
+                                        TextColor="{StaticResource AppPrimary}"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="End Date" 
+                                   FontSize="12" 
+                                   TextColor="{StaticResource AppSecondary}"/>
+                            <DatePicker Date="{Binding SelectedEndDate}" 
+                                        Format="MMM dd, yyyy"
+                                        TextColor="{StaticResource AppPrimary}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Reset Button -->
+                    <Button Text="🔄 Reset to Current Month"
+                            Command="{Binding ResetToCurrentMonthCommand}"
+                            BackgroundColor="{StaticResource AppSecondary}"
+                            TextColor="White"
+                            HeightRequest="40"
+                            FontSize="14"/>
+
+                    <!-- Sport Filter Checkboxes -->
+                    <Label Text="Select Sports:" 
+                           FontSize="12" 
+                           TextColor="{StaticResource AppSecondary}"
+                           Margin="0,8,0,0"/>
+
+                    <Grid ColumnDefinitions="*, *" 
+                          RowDefinitions="Auto, Auto"
+                          ColumnSpacing="8"
+                          RowSpacing="8">
+                        
+                        <!-- Row 0, Column 0: Run -->
+                        <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
+                            <CheckBox IsChecked="{Binding IsRunSelected}" 
+                                      Color="{StaticResource AppPrimary}"/>
+                            <Label Text="🏃 Run" 
+                                   VerticalOptions="Center"
+                                   FontSize="14"
+                                   TextColor="{StaticResource AppText}"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Row 0, Column 1: Ride -->
+                        <HorizontalStackLayout Grid.Row="0" Grid.Column="1" Spacing="4">
+                            <CheckBox IsChecked="{Binding IsRideSelected}" 
+                                      Color="{StaticResource AppPrimary}"/>
+                            <Label Text="🚴 Ride" 
+                                   VerticalOptions="Center"
+                                   FontSize="14"
+                                   TextColor="{StaticResource AppText}"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Row 1, Column 0: VirtualRide -->
+                        <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
+                            <CheckBox IsChecked="{Binding IsVirtualRideSelected}" 
+                                      Color="{StaticResource AppPrimary}"/>
+                            <Label Text="🎮 VR" 
+                                   VerticalOptions="Center"
+                                   FontSize="14"
+                                   TextColor="{StaticResource AppText}"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Row 1, Column 1: Nordic Ski -->
+                        <HorizontalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
+                            <CheckBox IsChecked="{Binding IsNordicSkiSelected}" 
+                                      Color="{StaticResource AppPrimary}"/>
+                            <Label Text="⛷️ XC" 
+                                   VerticalOptions="Center"
+                                   FontSize="14"
+                                   TextColor="{StaticResource AppText}"/>
+                        </HorizontalStackLayout>
+                    </Grid>
+
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ✨ NEW: Filtered Stats Result Card -->
+            <Border Style="{StaticResource ActivityCardStyle}" 
+                    Padding="15">
+                <Grid ColumnDefinitions="*, *, *" 
+                      ColumnSpacing="8">
+
+                    <!-- Filtered Activity Count -->
+                    <VerticalStackLayout Grid.Column="0" 
+                                         Spacing="4" 
+                                         HorizontalOptions="Center">
+                        <Label Text="{Binding FilteredActivityCount}" 
+                               FontSize="28" 
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               TextColor="{StaticResource AppPrimary}"/>
+                        <Label Text="Activities" 
+                               FontSize="10"
+                               HorizontalOptions="Center"
+                               TextColor="{StaticResource AppSecondary}"/>
+                    </VerticalStackLayout>
+
+                    <!-- Filtered Total Hours -->
+                    <VerticalStackLayout Grid.Column="1" 
+                                         Spacing="4" 
+                                         HorizontalOptions="Center">
+                        <Label Text="{Binding FilteredTotalDuration, StringFormat='{0:F1}'}" 
+                               FontSize="28" 
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               TextColor="{StaticResource AppPrimary}"/>
+                        <Label Text="Hours" 
+                               FontSize="10"
+                               HorizontalOptions="Center"
+                               TextColor="{StaticResource AppSecondary}"/>
+                    </VerticalStackLayout>
+
+                    <!-- Filtered Total Distance -->
+                    <VerticalStackLayout Grid.Column="2" 
+                                         Spacing="4" 
+                                         HorizontalOptions="Center">
+                        <Label Text="{Binding FilteredTotalDistance, StringFormat='{0:F0}'}" 
+                               FontSize="28" 
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               TextColor="{StaticResource AppPrimary}"/>
+                        <Label Text="km" 
+                               FontSize="10"
+                               HorizontalOptions="Center"
+                               TextColor="{StaticResource AppSecondary}"/>
+                    </VerticalStackLayout>
+
+                </Grid>
+            </Border>
+
             <!-- Logout Button -->
             <Button Text="Logout"
                     Command="{Binding LogoutCommand}"
