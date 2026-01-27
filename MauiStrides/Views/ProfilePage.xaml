@@ -137,7 +137,11 @@
                                FontSize="16"
                                HorizontalOptions="Center"
                                TextColor="{StaticResource AppSecondary}"/>
-                    </VerticalStackLayout>
+                        <Label Text="Activities" 
+                               FontSize="10"
+                               HorizontalOptions="Center"
+                               TextColor="{StaticResource AppSecondary}"/>
+                     </VerticalStackLayout>
 
                     <!-- Ride Count -->
                     <VerticalStackLayout Grid.Column="1" 
@@ -150,6 +154,10 @@
                                TextColor="{StaticResource AppPrimary}"/>
                         <Label Text="🚴" 
                                FontSize="16"
+                               HorizontalOptions="Center"
+                               TextColor="{StaticResource AppSecondary}"/>
+                        <Label Text="Activities" 
+                               FontSize="10"
                                HorizontalOptions="Center"
                                TextColor="{StaticResource AppSecondary}"/>
                     </VerticalStackLayout>
@@ -167,12 +175,16 @@
                                FontSize="16"
                                HorizontalOptions="Center"
                                TextColor="{StaticResource AppSecondary}"/>
+                        <Label Text="Activities" 
+                               FontSize="10"
+                               HorizontalOptions="Center"
+                               TextColor="{StaticResource AppSecondary}"/>
                     </VerticalStackLayout>
 
                 </Grid>
             </Border>
 
-            <!-- ✨ NEW: Date Range & Sport Filter Section -->
+            
             <Border Style="{StaticResource ActivityCardStyle}" 
                     Padding="15">
                 <VerticalStackLayout Spacing="12">
