@@ -10,27 +10,21 @@ namespace MauiStrides.ViewModels
 {
     public partial class ActivitiesViewModel : ViewModelBase
     {
-        private readonly IStravaService _stravaService;
+        private readonly IActivityService _activityService;
 
-        // ============================================
-        // PAGINATION STATE
-        // ============================================
         private int _currentPage = 1;
         private const int _pageSize = 20;
         private bool _isLastPageReached = false;
 
-        // ============================================
-        // DATA LISTS
-        // ============================================
+       
         // Master list: All activities fetched from API
         private readonly List<Activity> _allFetchedActivities = new();
 
         // Filtered list: What the UI displays (Observable)
         public ObservableCollection<Activity> Activities { get; } = new();
 
-        // ============================================
-        // FILTER STATE
-        // ============================================
+      
+
         [ObservableProperty]
         private string searchText = "";
         partial void OnSearchTextChanged(string value) => FilterActivities();
@@ -39,29 +33,16 @@ namespace MauiStrides.ViewModels
         private string selectedFilter = "All";
         partial void OnSelectedFilterChanged(string value) => FilterActivities();
 
-        // ============================================
-        // LOADING STATE
-        // ============================================
         [ObservableProperty]
         private bool isFooterLoading;
 
-        // ============================================
-        // PROFILE DATA
-        // ============================================
-        [ObservableProperty]
-        private AthleteProfile? currentAthleteProfile;
-
-        // ============================================
-        // CONSTRUCTOR
-        // ============================================
-        public ActivitiesViewModel(IStravaService stravaService)
+      
+        public ActivitiesViewModel(IActivityService activityService)
         {
-            _stravaService = stravaService;
+            _activityService = activityService;
             Title = "Aktiviteter";
         }
 
-        // ============================================
-        // INITIAL LOAD (First Page)
         // ============================================
         public async Task LoadActivitiesAsync()
         {
@@ -78,7 +59,7 @@ namespace MauiStrides.ViewModels
             try
             {
                 // Fetch first page from API
-                var activities = await _stravaService.GetActivitiesAsync(_currentPage, _pageSize);
+                var activities = await _activityService.GetActivitiesAsync(_currentPage, _pageSize);
 
                 // Check if we got less than a full page (means no more data exists)
                 if (activities.Count < _pageSize)
@@ -103,9 +84,7 @@ namespace MauiStrides.ViewModels
             }
         }
 
-        // ============================================
-        // LOAD MORE (Next Page) - Infinite Scroll
-        // ============================================
+        // Inifinite scroll - Load more data when user scrolls to bottom
         [RelayCommand]
         public async Task LoadMore()
         {
@@ -120,7 +99,7 @@ namespace MauiStrides.ViewModels
                 _currentPage++;
 
                 // Fetch next page from API
-                var newActivities = await _stravaService.GetActivitiesAsync(_currentPage, _pageSize);
+                var newActivities = await _activityService.GetActivitiesAsync(_currentPage, _pageSize);
 
                 // Check if this is the last page
                 if (newActivities.Count < _pageSize)
@@ -146,9 +125,6 @@ namespace MauiStrides.ViewModels
             }
         }
 
-        // ============================================
-        // FILTERING LOGIC
-        // ============================================
         private void FilterActivities()
         {
             // Start with all fetched activities from master list
@@ -176,9 +152,7 @@ namespace MauiStrides.ViewModels
             }
         }
 
-        // ============================================
-        // FILTER COMMANDS
-        // ============================================
+       
         [RelayCommand]
         void ApplyFilter(string filterType)
         {
@@ -188,18 +162,7 @@ namespace MauiStrides.ViewModels
             OnPropertyChanged(nameof(SelectedFilter));
         }
 
-        // ============================================
-        // PROFILE LOADING
-        // ============================================
-        public async Task LoadAthleteProfile()
-        {
-            var profile = await _stravaService.GetAthleteProfileAsync();
-            CurrentAthleteProfile = profile;
-        }
-
-        // ============================================
-        // NAVIGATION COMMANDS
-        // ============================================
+       
         [RelayCommand]
         [SupportedOSPlatform("windows10.0.17763.0")]
         async Task GoToDetails(Activity activity)
@@ -212,11 +175,5 @@ namespace MauiStrides.ViewModels
             });
         }
 
-        [RelayCommand]
-        [SupportedOSPlatform("windows10.0.17763.0")]
-        async Task GoToProfile()
-        {
-            await Shell.Current.GoToAsync("ProfilePage");
-        }
     }
 }

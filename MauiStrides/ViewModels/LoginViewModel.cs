@@ -9,11 +9,11 @@ namespace MauiStrides.ViewModels
 {
     public partial class LoginViewModel : ObservableObject
     {
-        private readonly IStravaService _stravaService;
+        private readonly IStravaAuthService _stravaAuthService;
 
-        public LoginViewModel(IStravaService stravaService)
+        public LoginViewModel(IStravaAuthService stravaAuthService)
         {
-            _stravaService = stravaService;
+            _stravaAuthService = stravaAuthService;
 
         }
 
@@ -22,7 +22,7 @@ namespace MauiStrides.ViewModels
         {
             try
             {
-                await _stravaService.LoginServiceAsync();
+                await _stravaAuthService.LoginServiceAsync();
             }
             catch (Exception ex)
             {

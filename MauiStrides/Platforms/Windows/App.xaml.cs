@@ -9,17 +9,12 @@ using static Microsoft.Maui.LifecycleEvents.WindowsLifecycle;
 
 namespace MauiStrides.WinUI
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
+  
     public partial class App : MauiWinUIApplication
     {
         
 
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
+      
         public App()
         {
             this.InitializeComponent();
@@ -48,7 +43,7 @@ namespace MauiStrides.WinUI
             }
             else
             {
-                // 👇 HÄR ÄR NYCKELN! 👇
+                
                 // Vi ÄR huvud-instansen. Vi måste börja lyssna på signaler från andra instanser!
                 mainInstance.Activated += OnActivated;
             }
@@ -68,10 +63,10 @@ namespace MauiStrides.WinUI
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         // Hämta StravaService via den globala containern
-                        var stravaService = IPlatformApplication.Current.Services.GetService<IStravaService>();
+                        var stravaAuthService = IPlatformApplication.Current.Services.GetService<IStravaAuthService>();
 
                         // Kör din metod!
-                        stravaService?.HandleAuthCallbackAsync(uri);
+                        stravaAuthService?.HandleAuthCallbackAsync(uri);
                     });
                 }
             }

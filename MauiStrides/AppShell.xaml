@@ -4,12 +4,13 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiStrides.Views"
-    Title="MauiStrides">
-
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="LoginPage" />
+    Shell.BackgroundColor="{StaticResource AppBackground}"
+    Shell.ForegroundColor="{StaticResource AppText}"
+    Shell.TitleColor="{StaticResource AppText}"
+    Shell.TabBarBackgroundColor="{StaticResource AppBackground}"
+    Shell.TabBarForegroundColor="{StaticResource AppText}"
+    Shell.TabBarTitleColor="{StaticResource AppText}"
+    Shell.TabBarUnselectedColor="{StaticResource AppSecondary}">
 
     <ShellContent
         Title="Activities"
@@ -17,8 +18,8 @@
         Route="ActivitiesPage" />
 
     <ShellContent
-    Title="Summary Reports"
-    ContentTemplate="{DataTemplate local:SummaryPage}"
-    Route="SummaryPage" />
+    Title="Profile"
+    ContentTemplate="{DataTemplate local:ProfilePage}"
+    Route="ProfilePage" />
 
 </Shell>

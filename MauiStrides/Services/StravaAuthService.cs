@@ -1,50 +1,18 @@
-﻿using MauiStrides.Client;
-using MauiStrides.Models;
+﻿using MauiStrides.Views;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MauiStrides.Services
 {
-    public class StravaService : IStravaService
+    public class StravaAuthService : IStravaAuthService
     {
-        private readonly StravaApiClient _apiClient;
         private readonly ITokenService _tokenService;
 
-        public StravaService(StravaApiClient apiClient, ITokenService tokenService)
+        public StravaAuthService(ITokenService tokenService)
         {
-
-            _apiClient = apiClient;
             _tokenService = tokenService;
         }
-
-        public async Task<List<Activity>> GetActivitiesAsync(int page, int perPage)
-        {
-            return await _apiClient.GetActivitiesAsync(page, perPage);
-        }
-
-
-        public async Task<List<Activity>> GetAllActivitiesAsync(string? type = null)
-        {
-            var allActivities = await _apiClient.GetActivitiesAsync();
-
-            if (!string.IsNullOrWhiteSpace(type))
-            {
-                return allActivities
-                    .Where(a => a.Type.Equals(type, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-            }
-
-            return allActivities;
-        }
-
-        public async Task<AthleteProfile> GetAthleteProfileAsync()
-        {
-            return await _apiClient.GetAthleteProfileAsync();
-        }
-
-        public async Task<Activity> GetActivityDetailsAsync(long activityId)
-        {
-            return await _apiClient.GetActivityDetailsAsync(activityId);
-        }
-
         public async Task HandleAuthCallbackAsync(string uriString)
         {
             try
@@ -69,6 +37,17 @@ namespace MauiStrides.Services
             {
                 System.Diagnostics.Debug.WriteLine($"Callback Error: {ex.Message}");
             }
+        }
+
+        public async Task LogoutAsync()
+        {
+            await _tokenService.ClearTokensAsync();
+
+            await MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                var loginPage = IPlatformApplication.Current.Services.GetService<LoginPage>();
+                Application.Current.MainPage = new NavigationPage(loginPage);
+            });
         }
 
         public async Task LoginServiceAsync()

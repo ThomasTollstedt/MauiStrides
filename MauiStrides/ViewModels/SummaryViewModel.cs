@@ -12,7 +12,7 @@ namespace MauiStrides.ViewModels
 {
     public partial class SummaryViewModel : ViewModelBase
     {
-        private readonly IStravaService _stravaService;
+        private readonly IActivityService _activityService;
 
         [ObservableProperty]
         private Chart distanceChart = new DonutChart
@@ -34,9 +34,9 @@ namespace MauiStrides.ViewModels
         [ObservableProperty]
         private string errorMessage = "";
 
-        public SummaryViewModel(IStravaService stravaService)
+        public SummaryViewModel(IActivityService activityService)
         {
-            _stravaService = stravaService;
+            _activityService = activityService;
             Title = "Statistics";
         }
 
@@ -52,7 +52,7 @@ namespace MauiStrides.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine("📊 [SummaryViewModel] Starting chart load...");
 
-                var activities = await _stravaService.GetAllActivitiesAsync();
+                var activities = await _activityService.GetAllActivitiesAsync();
 
                 if (activities == null)
                 {
