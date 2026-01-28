@@ -142,8 +142,8 @@ namespace MauiStrides
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<ActivityDetailsViewModel>();
             builder.Services.AddTransient<ActivityDetailsPage>();
-            builder.Services.AddTransient<SummaryViewModel>();
-            builder.Services.AddTransient<SummaryPage>();
+            //builder.Services.AddTransient<SummaryViewModel>();
+            //builder.Services.AddTransient<SummaryPage>();
             builder.Services.AddTransient<ProfileViewModel>();
             builder.Services.AddTransient<ProfilePage>();
 

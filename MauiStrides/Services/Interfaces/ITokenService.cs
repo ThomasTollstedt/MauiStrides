@@ -6,7 +6,6 @@ namespace MauiStrides.Services
         Task StoreTokensAsync(string accessToken, string refreshToken, long expiresAt);
         Task<bool> HasStoredTokensAsync();
         Task ClearTokensAsync();
-
         Task<string> LoginAsync(string authorizationCode);
     }
 }

@@ -66,56 +66,66 @@
 
             <!-- Overall Stats Grid Card -->
             <Border Style="{StaticResource ActivityCardStyle}" 
-                    Padding="15">
-                <Grid ColumnDefinitions="*, *, *" 
-                      ColumnSpacing="8">
+         Padding="15">
+                <VerticalStackLayout Spacing="10">
 
-                    <!-- Activity Count -->
-                    <VerticalStackLayout Grid.Column="0" 
-                                         Spacing="4" 
-                                         HorizontalOptions="Center">
-                        <Label Text="{Binding CurrentMonthActivityCount}" 
-                               FontSize="28" 
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"
-                               TextColor="{StaticResource AppPrimary}"/>
-                        <Label Text="Activities" 
-                               FontSize="10"
-                               HorizontalOptions="Center"
-                               TextColor="{StaticResource AppSecondary}"/>
-                    </VerticalStackLayout>
+                    <!-- Section Title -->
+                    <Label Text="Monthly Summary" 
+                FontSize="12" 
+                FontAttributes="None"
+                HorizontalOptions="Center"
+                TextColor="{StaticResource AppPrimary}"/>
 
-                    <!-- Total Hours -->
-                    <VerticalStackLayout Grid.Column="1" 
-                                         Spacing="4" 
-                                         HorizontalOptions="Center">
-                        <Label Text="{Binding CurrentMonthTotalDuration, StringFormat='{0:F1}'}" 
-                               FontSize="28" 
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"
-                               TextColor="{StaticResource AppPrimary}"/>
-                        <Label Text="Hours" 
-                               FontSize="10"
-                               HorizontalOptions="Center"
-                               TextColor="{StaticResource AppSecondary}"/>
-                    </VerticalStackLayout>
+                    <Grid ColumnDefinitions="*, *, *" 
+               ColumnSpacing="8">
 
-                    <!-- Total Distance -->
-                    <VerticalStackLayout Grid.Column="2" 
-                                         Spacing="4" 
-                                         HorizontalOptions="Center">
-                        <Label Text="{Binding CurrentMonthTotalDistance, StringFormat='{0:F0}'}" 
-                               FontSize="28" 
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"
-                               TextColor="{StaticResource AppPrimary}"/>
-                        <Label Text="km" 
-                               FontSize="10"
-                               HorizontalOptions="Center"
-                               TextColor="{StaticResource AppSecondary}"/>
-                    </VerticalStackLayout>
+                        <!-- Activity Count -->
+                        <VerticalStackLayout Grid.Column="0" 
+                                  Spacing="4" 
+                                  HorizontalOptions="Center">
+                            <Label Text="{Binding CurrentMonthActivityCount}" 
+                        FontSize="28" 
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="{StaticResource AppPrimary}"/>
+                            <Label Text="Activities" 
+                        FontSize="10"
+                        HorizontalOptions="Center"
+                        TextColor="{StaticResource AppSecondary}"/>
+                        </VerticalStackLayout>
 
-                </Grid>
+                        <!-- Total Hours -->
+                        <VerticalStackLayout Grid.Column="1" 
+                                  Spacing="4" 
+                                  HorizontalOptions="Center">
+                            <Label Text="{Binding CurrentMonthTotalDuration, StringFormat='{0:F1}'}" 
+                        FontSize="28" 
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="{StaticResource AppPrimary}"/>
+                            <Label Text="Hours" 
+                        FontSize="10"
+                        HorizontalOptions="Center"
+                        TextColor="{StaticResource AppSecondary}"/>
+                        </VerticalStackLayout>
+
+                        <!-- Total Distance -->
+                        <VerticalStackLayout Grid.Column="2" 
+                                  Spacing="4" 
+                                  HorizontalOptions="Center">
+                            <Label Text="{Binding CurrentMonthTotalDistance, StringFormat='{0:F0}'}" 
+                        FontSize="28" 
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="{StaticResource AppPrimary}"/>
+                            <Label Text="km" 
+                        FontSize="10"
+                        HorizontalOptions="Center"
+                        TextColor="{StaticResource AppSecondary}"/>
+                        </VerticalStackLayout>
+
+                    </Grid>
+                </VerticalStackLayout>
             </Border>
 
             <!-- Activity Types Card -->    
@@ -190,10 +200,10 @@
                 <VerticalStackLayout Spacing="12">
 
                     <!-- Section Title -->
-                    <Label Text="Custom Date Range &amp; Sport Filter" 
-                           FontSize="16" 
+                    <!--<Label Text="" 
+                           FontSize="12" 
                            FontAttributes="Bold"
-                           TextColor="{StaticResource AppText}"/>
+                           TextColor="{StaticResource AppPrimary}"/>-->
 
                     <!-- Date Pickers Row -->
                     <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
@@ -217,7 +227,7 @@
                     </Grid>
 
                     <!-- Reset Button -->
-                    <Button Text="🔄 Reset to Current Month"
+                    <Button Text="Reset to Current Month"
                             Command="{Binding ResetToCurrentMonthCommand}"
                             BackgroundColor="{StaticResource AppSecondary}"
                             TextColor="White"
@@ -266,14 +276,14 @@
                         </HorizontalStackLayout>
 
                         <!-- Row 1, Column 1: Nordic Ski -->
-                        <HorizontalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
+                        <!--<HorizontalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
                             <CheckBox IsChecked="{Binding IsNordicSkiSelected}" 
                                       Color="{StaticResource AppPrimary}"/>
                             <Label Text="⛷️ XC" 
                                    VerticalOptions="Center"
                                    FontSize="14"
                                    TextColor="{StaticResource AppText}"/>
-                        </HorizontalStackLayout>
+                        </HorizontalStackLayout>-->
                     </Grid>
 
 

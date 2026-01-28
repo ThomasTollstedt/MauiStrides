@@ -18,7 +18,7 @@ namespace MauiStrides.Services
         }
 
 
-        public async Task<List<Activity>> GetAllActivitiesAsync(string? type = null)
+        public async Task<List<Activity>> GetAllActivitiesAsync(string? type = null) // Nullable parameter ifall det skulle saknas.
         {
             var allActivities = await _activityRepository.GetActivitiesAsync();
 

@@ -10,6 +10,10 @@ using System.Text;
 
 namespace MauiStrides.ViewModels
 {
+
+    // Har i denna ViewModel lagt till nya properties och metoder för att hantera filtrering av aktiviteter baserat på datumintervall och sporttyper.
+    // Använder CommunityToolkit.Mvvm för att förenkla property changed-notifikationer och kommandon.
+    // Gjorde valet att behålla allt i ProfileViewModel för att undvika onödig komplexitet med flera ViewModels för en relativt enkel vy.
     public partial class ProfileViewModel : ViewModelBase
     {
         private readonly IAthleteService _athleteService;
@@ -87,45 +91,45 @@ namespace MauiStrides.ViewModels
         {
             var currentMonthActivities = await GetCurrentMonthActivitiesAsync();
 
-            // Overall stats
-            CurrentMonthActivityCount = currentMonthActivities.Count;
-            CurrentMonthTotalDuration = currentMonthActivities.Sum(a => a.MovingTime) / 3600.0m;
-            CurrentMonthTotalDistance = currentMonthActivities.Sum(a => a.Distance) / 1000.0m;
+            //Filtrerar endast de sporttyper som ska visas i sammanfattningen
+            var displayedActivities = currentMonthActivities
+                .Where(a => a.Type == "Run" || a.Type == "Ride" || a.Type == "VirtualRide")
+                .ToList();
 
-            // By type
-            CurrentMonthRunCount = currentMonthActivities.Count(a => a.Type == "Run");
-            CurrentMonthRideCount = currentMonthActivities.Count(a => a.Type == "Ride");
-            CurrentMonthVirtualRideCount = currentMonthActivities.Count(a => a.Type == "VirtualRide");
+            // Totals 
+            CurrentMonthActivityCount = displayedActivities.Count;
+            CurrentMonthTotalDuration = displayedActivities.Sum(a => a.MovingTime) / 3600.0m;
+            CurrentMonthTotalDistance = displayedActivities.Sum(a => a.Distance) / 1000.0m;
+
+            // Typ, räknar varje sporttyp separat.
+            CurrentMonthRunCount = displayedActivities.Count(a => a.Type == "Run");
+            CurrentMonthRideCount = displayedActivities.Count(a => a.Type == "Ride");
+            CurrentMonthVirtualRideCount = displayedActivities.Count(a => a.Type == "VirtualRide");
         }
 
-        // New: Load filtered stats based on date range and selected sports
+       
         public async Task LoadFilteredStats()
         {
             var activities = await GetActivitiesInDateRangeAsync(SelectedStartDate, SelectedEndDate);
 
-            // Build list of selected sport types
+            
             var selectedSports = new List<string>();
             if (IsRunSelected) selectedSports.Add("Run");
             if (IsRideSelected) selectedSports.Add("Ride");
             if (IsVirtualRideSelected) selectedSports.Add("VirtualRide");
-            if (IsNordicSkiSelected)
-            {
-                selectedSports.Add("NordicSki");
-                selectedSports.Add("BackcountrySki");
-            }
-
-            // Filter activities by selected sports
+           
+            
             var filteredActivities = activities
                 .Where(a => selectedSports.Contains(a.Type))
                 .ToList();
 
-            // Calculate totals
+            // Totals för valda sporter
             FilteredActivityCount = filteredActivities.Count;
             FilteredTotalDuration = filteredActivities.Sum(a => a.MovingTime) / 3600.0m;
             FilteredTotalDistance = filteredActivities.Sum(a => a.Distance) / 1000.0m;
         }
 
-        // Refactored: Get activities in date range (DRY principle)
+        //Hjälpmetod för att hämta aktiviteter inom ett datumintervall
         private async Task<List<Activity>> GetActivitiesInDateRangeAsync(DateTime startDate, DateTime endDate)
         {
             var activities = await _activityService.GetAllActivitiesAsync();
@@ -134,41 +138,8 @@ namespace MauiStrides.ViewModels
                 .Where(a => a.StartDate.Date >= startDate.Date && a.StartDate.Date <= endDate.Date)
                 .ToList();
         }
-        //public async Task LoadCurrentMonthActivityDetailCounter()
-        //{
-        //    var currentMonthActivities = await GetCurrentMonthActivitiesAsync();
-               
-        //    CurrentMonthRunCount = currentMonthActivities.Count(a => a.Type == "Run");
-        //    CurrentMonthRideCount = currentMonthActivities.Count(a => a.Type == "Ride");
-        //    CurrentMonthVirtualRideCount = currentMonthActivities.Count(a => a.Type == "VirtualRide");
 
-        //}
-        //public async Task LoadCurrentMonthActivityCounter()
-        //{
-        //    var currentMonthActivities = await GetCurrentMonthActivitiesAsync();
-        //    CurrentMonthActivityCount = currentMonthActivities
-        //    .Count();
-
-        //}
-
-        //public async Task LoadCurrentMonthTotalDuration()
-        //{
-        //    var currentMonthActivities = await GetCurrentMonthActivitiesAsync();
-        //    var totalSeconds = currentMonthActivities.Sum(a => a.MovingTime);
-        //    //convert 
-        //    CurrentMonthTotalDuration = totalSeconds / 3600.0m; // Convert seconds to hours
-
-        //}
-
-        //public async Task LoadCurrentMonthTotalDistance()
-        //{
-        //    var currentMonthActivities = await GetCurrentMonthActivitiesAsync();
-        //    var totalMeters = currentMonthActivities.Sum(a => a.Distance);
-        //    //convert 
-        //    CurrentMonthTotalDistance = totalMeters / 1000.0m; // Convert meters to kilometers
-
-        //}
-        // Existing method (kept for backward compatibility)
+        // Tidigare hjälpmetod för att hämta aktiviteter för innevarande månad
         private async Task<List<Activity>> GetCurrentMonthActivitiesAsync()
         {
             var now = DateTime.Now;
@@ -195,7 +166,7 @@ namespace MauiStrides.ViewModels
             IsRunSelected = true;
             IsRideSelected = true;
             IsVirtualRideSelected = true;
-            IsNordicSkiSelected = true;
+         
         }
 
         [RelayCommand]
@@ -208,7 +179,7 @@ namespace MauiStrides.ViewModels
         [RelayCommand]
         async Task Logout()
         {
-            bool confirm = await Application.Current.MainPage.DisplayAlert(
+            bool confirm = await Application.Current.MainPage.DisplayAlertAsync(
                 "Logout",
                 "Are you sure you want to log out?",
                 "Yes",

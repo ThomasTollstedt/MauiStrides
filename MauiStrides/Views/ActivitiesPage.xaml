@@ -5,14 +5,14 @@
              xmlns:models="clr-namespace:MauiStrides.Models"
              x:Class="MauiStrides.Views.ActivitiesPage"
              x:Name="ThisPage" 
-             Title="Activities"
+             Title=""
              BackgroundColor="{StaticResource AppBackground}">
 
     <Grid RowDefinitions="Auto, Auto, *">
 
         <VerticalStackLayout Grid.Row="0" Padding="12" Spacing="12">
             <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
-                <Label Text="Aktiviteter" 
+                <Label Text="Activities" 
                        FontSize="20"
                        FontAttributes="Bold"
                        TextColor="{StaticResource AppText}"
@@ -35,7 +35,7 @@
 
             <Border StrokeShape="RoundRectangle 10" StrokeThickness="0" 
                     BackgroundColor="{StaticResource AppSurface}" Padding="8,0">
-                <SearchBar Placeholder="Sök aktivitet..." 
+                <SearchBar Placeholder="Search for activities..." 
                            TextColor="{StaticResource AppText}"
                            PlaceholderColor="{StaticResource AppSecondary}"
                            Text="{Binding SearchText}"
@@ -49,7 +49,7 @@
             <HorizontalStackLayout Spacing="6">
                 
                 <!-- "Alla" Filter Button -->
-                <Button Text="Alla" 
+                <Button Text="All" 
                         Command="{Binding ApplyFilterCommand}" 
                         CommandParameter="All"
                         FontSize="12"

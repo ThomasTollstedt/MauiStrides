@@ -1,8 +1,5 @@
 namespace MauiStrides.Services
 {
-    /// <summary>
-    /// Configuration for Strava API credentials
-    /// </summary>
     public class StravaConfiguration
     {
         public string ClientId { get; set; } = string.Empty;

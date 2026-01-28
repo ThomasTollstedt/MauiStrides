@@ -9,8 +9,7 @@ namespace MauiStrides.Client
     {
         private readonly HttpClient _httpClient;
         private readonly ITokenService _tokenService;
-        //private const string BaseUrl = "https://www.strava.com/api/v3/";
-
+       
         public StravaApiClient(HttpClient httpClient, ITokenService tokenService)
         {
             _httpClient = httpClient;
@@ -23,7 +22,7 @@ namespace MauiStrides.Client
             return await GetAsync<List<ActivityDTO>>("athlete/activities");
         }
 
-        //overload för pagineringen
+        //Overload pga pagination
         public async Task<List<ActivityDTO>> GetActivitiesAsync(int page, int perPage)
         {
             await SetAuthorizationHeaderAsync();
@@ -55,8 +54,8 @@ namespace MauiStrides.Client
                 new AuthenticationHeaderValue("Bearer", accessToken);
         }
 
-        
-        private async Task<T> GetAsync<T>(string endpoint)
+        // Centralisera alla HTTP GET-anrop
+        private async Task<T> GetAsync<T>(string endpoint) // endpoint ex athlete/activities
         {
             var response = await _httpClient.GetAsync(endpoint);
 

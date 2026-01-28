@@ -43,7 +43,7 @@ namespace MauiStrides.ViewModels
             Title = "Aktiviteter";
         }
 
-        // ============================================
+    
         public async Task LoadActivitiesAsync()
         {
             if (IsBusy) return;
@@ -52,7 +52,7 @@ namespace MauiStrides.ViewModels
             _currentPage = 1;
             _isLastPageReached = false;
 
-            // Clear everything when starting fresh
+            // Cleara båda listorna för ny inläsning
             _allFetchedActivities.Clear();
             Activities.Clear();
 
@@ -61,22 +61,22 @@ namespace MauiStrides.ViewModels
                 // Fetch first page from API
                 var activities = await _activityService.GetActivitiesAsync(_currentPage, _pageSize);
 
-                // Check if we got less than a full page (means no more data exists)
+                // Checka om detta är sista sidan genom antal aktiviteter fetchade.
                 if (activities.Count < _pageSize)
                 {
                     _isLastPageReached = true;
                 }
 
-                // Add to master list
+                // Till master-listan.
                 _allFetchedActivities.AddRange(activities);
 
-                // Apply current filter to show correct items
+                // Hjälpmetod filtrering och uppdatering av ObservableCollection
                 FilterActivities();
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error loading activities: {ex.Message}");
-                // TODO: Show error to user via dialog or toast
+                
             }
             finally
             {
@@ -84,11 +84,11 @@ namespace MauiStrides.ViewModels
             }
         }
 
-        // Inifinite scroll - Load more data when user scrolls to bottom
+        // Inifinite scroll vid 5 items från botten
         [RelayCommand]
         public async Task LoadMore()
         {
-            // Don't load if already loading or no more data
+            // Stoppar laddning om redan laddar, sista sidan nådd eller upptagen
             if (IsFooterLoading || _isLastPageReached || IsBusy) return;
 
             IsFooterLoading = true;
@@ -156,8 +156,7 @@ namespace MauiStrides.ViewModels
         [RelayCommand]
         void ApplyFilter(string filterType)
         {
-            // Setting SelectedFilter automatically triggers FilterActivities()
-            // via the partial method OnSelectedFilterChanged
+            // Command för att sätta vald filtertyp från UI och meddela förändring.
             SelectedFilter = filterType;
             OnPropertyChanged(nameof(SelectedFilter));
         }

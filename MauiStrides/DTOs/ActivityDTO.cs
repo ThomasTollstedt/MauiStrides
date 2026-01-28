@@ -40,7 +40,6 @@ namespace MauiStrides.Models
         [JsonPropertyName("total_elevation_gain")]
         public decimal TotalElevationGain { get; set; } // meters
 
-        // NEW: Additional metrics from Strava
         [JsonPropertyName("max_speed")]
         public decimal MaxSpeed { get; set; } // m/s
 

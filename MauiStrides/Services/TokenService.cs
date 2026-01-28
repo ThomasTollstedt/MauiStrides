@@ -26,9 +26,7 @@ namespace MauiStrides.Services
             }
         }
 
-        /// <summary>
-        /// Gets a valid access token, refreshing it if necessary
-        /// </summary>
+        // Fixa refreshToken eller refreshan automatiskt när token är på väg att gå ut.
         public async Task<string> GetValidAccessTokenAsync()
         {
             var accessToken = await SecureStorage.GetAsync(AccessTokenKey);
@@ -42,7 +40,7 @@ namespace MauiStrides.Services
             var expiresAt = long.Parse(expiresAtStr);
             var expirationTime = DateTimeOffset.FromUnixTimeSeconds(expiresAt);
 
-            // Refresh if expired or expiring within 5 minutes
+            // Refreshar om utgånget eller om det går ut inom 5 minuter
             if (DateTimeOffset.UtcNow.AddMinutes(5) >= expirationTime)
             {
                 return await RefreshAccessTokenAsync();
@@ -51,9 +49,7 @@ namespace MauiStrides.Services
             return accessToken;
         }
 
-        /// <summary>
-        /// Stores tokens securely
-        /// </summary>
+        //Lagra via SecureStorage
         public async Task StoreTokensAsync(string accessToken, string refreshToken, long expiresAt)
         {
             await SecureStorage.SetAsync(AccessTokenKey, accessToken);
@@ -61,18 +57,16 @@ namespace MauiStrides.Services
             await SecureStorage.SetAsync(ExpiresAtKey, expiresAt.ToString());
         }
 
-        /// <summary>
-        /// Checks if tokens are stored
-        /// </summary>
+
+        // Checks if tokens are stored
+
         public async Task<bool> HasStoredTokensAsync()
         {
             var accessToken = await SecureStorage.GetAsync(AccessTokenKey);
             return !string.IsNullOrEmpty(accessToken);
         }
 
-        /// <summary>
-        /// Clears all stored tokens (for logout)
-        /// </summary>
+        // Cleara tokens vid utloggning
         public async Task ClearTokensAsync()
         {
             SecureStorage.Remove(AccessTokenKey);
@@ -108,9 +102,7 @@ namespace MauiStrides.Services
             return tokenResponse.AccessToken;
         }
 
-        /// <summary>
-        /// Refreshes the access token using the refresh token
-        /// </summary>
+
         private async Task<string> RefreshAccessTokenAsync()
         {
             var refreshToken = await SecureStorage.GetAsync(RefreshTokenKey);
@@ -161,33 +153,5 @@ namespace MauiStrides.Services
                 throw new InvalidOperationException("Token refresh failed. Please log in again.", ex);
             }
         }
-
-        //    public bool HasValidToken()
-        //    {
-        //        try
-        //        {
-        //            var accessToken = SecureStorage.GetAsync("strava_access_token").Result;
-        //            var expiresAt = SecureStorage.GetAsync("strava_expires_at").Result;
-
-        //            if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(expiresAt))
-        //            {
-        //                return false;
-        //            }
-
-        //            // Check if token is expired
-        //            if (long.TryParse(expiresAt, out long expiresAtUnix))
-        //            {
-        //                var expiryTime = DateTimeOffset.FromUnixTimeSeconds(expiresAtUnix);
-        //                return DateTimeOffset.UtcNow < expiryTime;
-        //            }
-
-        //            return false;
-        //        }
-        //        catch
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //}
     }
 }

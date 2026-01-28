@@ -25,6 +25,7 @@ namespace MauiStrides.Repositories
             return profile;
         }
 
+        //Hjälpmetod för att mappa från DTO till domänmodell
         private AthleteProfile MapToDomainProfile(AthleteProfileDTO dto)
         {
             return new AthleteProfile
@@ -40,7 +41,7 @@ namespace MauiStrides.Repositories
                 Weight = dto.Weight,
                 ProfileMedium = dto.ProfileMedium,
                 Profile = dto.Profile,
-                Club = dto.Club
+                
             };
         }
     }

@@ -8,7 +8,5 @@ namespace MauiStrides.Services.Interfaces
     public interface IAthleteService
     {
         Task<AthleteProfile> GetAthleteProfileAsync();
-        
-
     }
 }

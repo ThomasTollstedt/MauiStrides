@@ -2,9 +2,6 @@ using System.Text.Json.Serialization;
 
 namespace MauiStrides.Models
 {
-    /// <summary>
-    /// Response from Strava OAuth token endpoint
-    /// </summary>
     public class StravaTokenResponse
     {
         [JsonPropertyName("access_token")]
@@ -22,9 +19,7 @@ namespace MauiStrides.Models
         [JsonPropertyName("token_type")]
         public string TokenType { get; set; } = "Bearer";
 
-        /// <summary>
-        /// Checks if the access token is expired or will expire within 5 minutes
-        /// </summary>
+      
         public bool IsExpired()
         {
             var expirationTime = DateTimeOffset.FromUnixTimeSeconds(ExpiresAt);

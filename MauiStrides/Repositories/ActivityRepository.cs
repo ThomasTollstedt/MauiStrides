@@ -25,9 +25,6 @@ namespace MauiStrides.Repositories
             return activities;
         }
 
-
-
-
         public async Task<List<Activity>> GetActivitiesAsync(int page, int perPage)
         {
             var activitiesDto = await _stravaApiClient.GetActivitiesAsync(page, perPage);
@@ -45,7 +42,8 @@ namespace MauiStrides.Repositories
             return activity;
         }
 
-    
+
+        //Hjälpmetod för att mappa från DTO till domänmodell
         private Activity MapToDomain(ActivityDTO dto)
         {
             return new Activity
